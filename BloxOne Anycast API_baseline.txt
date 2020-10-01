@@ -1,0 +1,556 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"http"
+1	"https"
+swagger	"2.0"
+info	
+description	"Anycast capability enables HA (High Availability) configuration of BloxOne applications that run on equipment located on customer's premises (on-prem hosts). Anycast supports DNS, as well as DNS-forwarding services.\n\nAnycast-enabled application setups use multiple on-premises installations for one particular application type. Multiple application instances are configured to use the same endpoint address. Anycast capability is collocated with such application instance, monitoring the local application instance and advertising to the upstream router (a customer equipment) a per-instance, local route to the common application endpoint address, as long as the local application instance is available. Depending on the type of the upstream router, the customer may configure local route advertisement via either BGP (Boarder Gateway Protocol) or OSPF (Open Shortest Path First) routing protocols. Both protocols may be enabled as well. Multiple routes to the common application service address provide redundancy without the need to reconfigure application clients.\n\nShould an application instance become unavailable, the local route advertisements stop, resulting in withdrawal of the route (in the upstream router) to the application instance that has gone out of service and ensuring that subsequent application requests thus get routed to the remaining available application instances.\n\n"
+title	"BloxOne Anycast API"
+version	"v1"
+basePath	"/api/anycast/v1/"
+paths	
+/accm/ac_configs	
+get	
+description	"Without any filtering, use this method to retrieve all named anycast configurations for the account of authorization. Anycast configuration comprises common anycast configuration data that is defined in support of one service on a set of on-prem hosts. The anycast configurations resulting from this call will not include the list(s) of member hosts. Retrieving the list of member hosts requires the GET operation on single anycast configuration resource. If the account has no anycast configurations defined, the result of this call will be an empty list.\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Retrieve Multiple Anycast Configurations"
+operationId	"OnPremAnycastManagerGetAnycastConfigList"
+parameters	
+0	
+type	"string"
+name	"service"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/protoGetAnycastConfigListResponse"
+post	
+description	"Use this method to create anycast configuration, as per the specified payload.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Create Anycast Configuration"
+operationId	"OnPremAnycastManagerCreateAnycastConfig"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/protoAnycastConfigNew"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/protoAnycastConfigResponse"
+/accm/ac_configs/{id}	
+get	
+description	"Use this method to retrieve the specified anycast configuration, together with the list of member hosts.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.404._error {\"code\": \"NOT_FOUND\", \"message\": \"\", \"status\": 404}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Retrieve Anycast Configuration"
+operationId	"OnPremAnycastManagerGetAnycastConfig"
+parameters	
+0	
+type	"integer"
+format	"int64"
+name	"id"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/protoAnycastConfigResponse"
+put	
+description	"Use this method to replace the addressed anycast configuration with configuration from the payload. If the addressed configuration does not exist, it will be created. Anycast configuration specified in the payload may contain the list of on-prem hosts that are supposed to be established as members of the specified configuration. If the anycast service has no information about one or more hosts from this list, such hosts will be created in the anycast service database. Note that the anycast service includes a background capability that verifies the validity of host data entered this way. This capability will delete any hosts created in this way that are determined to be invalid.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Create or Update Anycast Configuration"
+operationId	"OnPremAnycastManagerUpdateAnycastConfig"
+parameters	
+0	
+type	"integer"
+format	"int64"
+name	"id"
+in	"path"
+required	true
+1	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/protoAnycastConfigReplace"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/protoAnycastConfigResponse"
+delete	
+description	"Use this method to delete the addressed anycast configuration.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Delete Anycast Configuration"
+operationId	"OnPremAnycastManagerDeleteAnycastConfig"
+parameters	
+0	
+type	"integer"
+format	"int64"
+name	"id"
+in	"path"
+required	true
+responses	
+200	
+description	"DELETE operation response"
+schema	
+$ref	"#/definitions/protoEmptyResponse"
+/accm/op_hosts/{id}	
+get	
+description	"Use this method to retrieve the specified on-prem host from the anycast database.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.404._error {\"code\": \"NOT_FOUND\", \"message\": \"\", \"status\": 404}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Retrieve On-Prem Host"
+operationId	"OnPremAnycastManagerGetOnpremHost"
+parameters	
+0	
+type	"integer"
+format	"int64"
+name	"id"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/protoOnpremHostRetrievalResponse"
+put	
+description	"Use this method to create or update the addressed host as per the specified payload. The payload is supposed to provide complete replacement for the host data. If the addressed host does not exist, it will be created.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Create or Update On-Prem Host"
+operationId	"OnPremAnycastManagerUpdateOnpremHost"
+parameters	
+0	
+type	"integer"
+format	"int64"
+description	"Numeric host identifier"
+name	"id"
+in	"path"
+required	true
+1	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/protoOnpremHost"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/protoOnpremHostResponse"
+delete	
+description	"Use this method to delete the addressed on-prem host.\n@responses.400._error {\"code\": \"INVALID_ARGUMENT\", \"message\": \"\", \"status\": 400}\n@responses.404._error {\"code\": \"NOT_FOUND\", \"message\": \"\", \"status\": 404}\n@responses.500._error {\"code\": \"INTERNAL\", \"message\": \"Internal Server Error\", \"status\": 500}"
+tags	
+0	"OnPremAnycastManager"
+summary	"Delete On-Prem Host"
+operationId	"OnPremAnycastManagerDeleteOnpremHost"
+parameters	
+0	
+type	"integer"
+format	"int64"
+name	"id"
+in	"path"
+required	true
+responses	
+200	
+description	"DELETE operation response"
+schema	
+$ref	"#/definitions/protoEmptyResponse"
+definitions	
+protoAnycastConfig	
+type	"object"
+properties	
+account_id	
+type	"integer"
+format	"int64"
+anycast_ip_address	
+type	"string"
+created_at	
+type	"string"
+format	"date-time"
+description	
+type	"string"
+id	
+type	"integer"
+format	"int64"
+readOnly	true
+is_configured	
+type	"boolean"
+format	"boolean"
+name	
+type	"string"
+onprem_hosts	
+type	"array"
+items	
+$ref	"#/definitions/protoOnpremHostRef"
+service	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+updated_at	
+type	"string"
+format	"date-time"
+protoAnycastConfigReplace	
+type	"object"
+properties	
+anycast_ip_address	
+type	"string"
+description	
+type	"string"
+id	
+type	"integer"
+format	"int64"
+readOnly	true
+name	
+type	"string"
+onprem_hosts	
+type	"array"
+items	
+$ref	"#/definitions/protoOnpremHostRef"
+service	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+protoAnycastConfigListItem	
+type	"object"
+properties	
+account_id	
+type	"integer"
+format	"int64"
+anycast_ip_address	
+type	"string"
+created_at	
+type	"string"
+format	"date-time"
+description	
+type	"string"
+id	
+type	"integer"
+format	"int64"
+readOnly	true
+is_configured	
+type	"boolean"
+format	"boolean"
+name	
+type	"string"
+service	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+updated_at	
+type	"string"
+format	"date-time"
+protoAnycastConfigNew	
+type	"object"
+properties	
+anycast_ip_address	
+type	"string"
+description	
+type	"string"
+id	
+type	"integer"
+format	"int64"
+readOnly	true
+name	
+type	"string"
+onprem_hosts	
+type	"array"
+items	
+$ref	"#/definitions/protoOnpremHostRef"
+service	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+protoAnycastConfigRef	
+type	"object"
+title	"Struct anycast configuration reference"
+properties	
+anycast_config_name	
+type	"string"
+title	"Anycast configuration name"
+routing_protocols	
+type	"array"
+title	"Routing protocols enabled for this anycast configuration, on a\nparticular host. Valid protocol names are \"BGP\" and \"OSPF\".\n@example [\"BGP\", \"OSPF\"]"
+items	
+type	"string"
+protoAnycastConfigResponse	
+type	"object"
+properties	
+results	
+$ref	"#/definitions/protoAnycastConfig"
+success	
+properties	
+code	
+type	"string"
+example	"OK"
+message	
+type	"string"
+example	"<response message>"
+status	
+type	"integer"
+format	"int32"
+example	200
+protoBgpConfig	
+type	"object"
+title	"Struct BGP configuration; defines BGP configuration for one anycast-enabled on-prem host"
+properties	
+asn	
+type	"integer"
+format	"int64"
+title	"Autonomous system number of this BGP/anycast enabled on-prem host"
+holddown_secs	
+type	"integer"
+format	"int64"
+title	"BGP route hold-down timer"
+keep_alive_secs	
+type	"integer"
+format	"int64"
+title	"BGP keep-alive timer"
+link_detect	
+type	"boolean"
+format	"boolean"
+title	"Enable/disable link detection\n@example true"
+neighbors	
+type	"array"
+title	"List of BgpNeighbor structs"
+items	
+$ref	"#/definitions/protoBgpNeighbor"
+protoBgpNeighbor	
+type	"object"
+title	"Struct BGP neighbor; describes one of the BGP neighbors that participate in BGP configuration for one anycast-enabled on-prem host"
+properties	
+asn	
+type	"integer"
+format	"int64"
+title	"Autonomous system number of this BGP neighbor"
+ip_address	
+type	"string"
+title	"IPv4 address of the BGP neighbor\n@example \"11.83.17.55\""
+max_hop_count	
+type	"integer"
+format	"int64"
+title	"Max hop count, if BGP multihop is enabled"
+multihop	
+type	"boolean"
+format	"boolean"
+title	"BGP multihop enabled or not\n@example true"
+password	
+type	"string"
+title	"BGP protocol access password for this BGP neighbor, max 25 characters long"
+protoEmptyObject	
+type	"object"
+protoEmptyResponse	
+type	"object"
+properties	
+results	
+$ref	"#/definitions/protoEmptyObject"
+success	
+properties	
+code	
+type	"string"
+example	"DELETED"
+message	
+type	"string"
+example	"<response message>"
+status	
+type	"integer"
+format	"int32"
+example	204
+protoGetAnycastConfigListResponse	
+type	"object"
+properties	
+results	
+type	"array"
+items	
+$ref	"#/definitions/protoAnycastConfigListItem"
+success	
+properties	
+code	
+type	"string"
+example	"OK"
+message	
+type	"string"
+example	"<response message>"
+status	
+type	"integer"
+format	"int32"
+example	200
+protoOnpremHostRetrieved	
+type	"object"
+title	"Struct OnpremHost; represents one anycast-enabled on-prem host"
+properties	
+config_bgp	
+title	"BgpConfig struct, defining the BGP configuration for this anycast-enabled host"
+$ref	"#/definitions/protoBgpConfig"
+config_ospf	
+title	"OspfConfig struct, defining the OSPF configuration for this anycast-enabled host"
+$ref	"#/definitions/protoOspfConfig"
+created_at	
+type	"string"
+format	"date-time"
+title	"Date/time this host was created in anycast service database"
+id	
+type	"integer"
+format	"int64"
+title	"Numeric host identifier"
+readOnly	true
+ip_address	
+type	"string"
+title	"IPv4 address of the on-prem host\n@example \"11.83.17.55\""
+name	
+type	"string"
+title	"User-friendly name of the host\n@example \"dns-host-1\", \"Central Office Server\""
+updated_at	
+type	"string"
+format	"date-time"
+title	"Date/time this host was last updated in anycast service database"
+protoOnpremHost	
+type	"object"
+title	"Struct OnpremHost; represents one anycast-enabled on-prem host"
+properties	
+anycast_config_refs	
+type	"array"
+title	"Array of AnycastConfigRef structures, identifying the anycast configurations that this host is a member of"
+items	
+$ref	"#/definitions/protoAnycastConfigRef"
+config_bgp	
+title	"BgpConfig struct, defining the BGP configuration for this anycast-enabled host"
+$ref	"#/definitions/protoBgpConfig"
+config_ospf	
+title	"OspfConfig struct, defining the OSPF configuration for this anycast-enabled host"
+$ref	"#/definitions/protoOspfConfig"
+id	
+type	"integer"
+format	"int64"
+title	"Numeric host identifier"
+readOnly	true
+ip_address	
+type	"string"
+title	"IPv4 address of the on-prem host\n@example \"11.83.17.55\""
+name	
+type	"string"
+title	"User-friendly name of the host\n@example \"dns-host-1\", \"Central Office Server\""
+protoOnpremHostRef	
+description	"Struct on-prem host reference."
+type	"object"
+properties	
+id	
+type	"integer"
+format	"int64"
+title	"Numeric host identifier"
+readOnly	false
+ip_address	
+type	"string"
+title	"IPv4 address of the host in string format\n@example \"11.83.17.55\""
+name	
+type	"string"
+title	"User-friendly name of the host\n@example \"dns-host-1\", \"Central Office Server\""
+ophid	
+type	"string"
+title	"Unique 32-character string identifier assigned to the host\n@example \"8b9ba7b03d05fbb1b31a41d47968dd43\""
+readOnly	true
+protoOnpremHostRetrievalResponse	
+type	"object"
+properties	
+results	
+$ref	"#/definitions/protoOnpremHostRetrieved"
+success	
+properties	
+code	
+type	"string"
+example	"OK"
+message	
+type	"string"
+example	"<response message>"
+status	
+type	"integer"
+format	"int32"
+example	200
+protoOnpremHostResponse	
+type	"object"
+properties	
+results	
+$ref	"#/definitions/protoOnpremHost"
+success	
+properties	
+code	
+type	"string"
+example	"UPDATED"
+message	
+type	"string"
+example	"<response message>"
+status	
+type	"integer"
+format	"int32"
+example	201
+protoOspfConfig	
+type	"object"
+title	"Struct OSPF configuration; defines OSPF configuration for one anycast-enabled on-prem host"
+properties	
+area	
+type	"string"
+title	"OSPF area identifier; usually in the format of an IPv4 address (although not an address itself)\n@example \"0.0.0.1\""
+area_type	
+type	"string"
+title	"OSPF area type; one of: \"STANDARD\", \"STUB\", \"NSSA\""
+authentication_key	
+type	"string"
+title	"OSPF authentication key"
+authentication_key_id	
+type	"integer"
+format	"int64"
+title	"Numeric OSPF authentication key identifier"
+authentication_type	
+type	"string"
+title	"OSPF authentication type; one of \"Clear\", \"MD5\""
+cost	
+type	"integer"
+format	"int64"
+title	"Explicit link cost for the interface"
+dead_interval	
+type	"integer"
+format	"int64"
+title	"OSPF router dead interval timer in seconds; must be the same for all the routers on the same network; default: 40 secs"
+hello_interval	
+type	"integer"
+format	"int64"
+title	"Period (in seconds) of OSPF Hello packet, sent by the OSPF router; must be the same for all the routers on the same network; default: 10 secs"
+interface	
+type	"string"
+title	"Name of the interface that is configured with external IP address of the host\n@example \"eth0\""
+retransmit_interval	
+type	"integer"
+format	"int64"
+title	"Period (in seconds) of retransmitting for OSPF Database Description and Link State Requests; default: 5 seconds"
+transmit_delay	
+type	"integer"
+format	"int64"
+title	"Estimated time to transmit link state advertisements; default: 1 sec"
+typesJSONValue	
+type	"object"
+properties	
+value	
+type	"string"
+securityDefinitions	
+ApiKeyAuth	
+type	"apiKey"
+name	"Authorization"
+in	"header"
+security	
+0	
+ApiKeyAuth	[]
