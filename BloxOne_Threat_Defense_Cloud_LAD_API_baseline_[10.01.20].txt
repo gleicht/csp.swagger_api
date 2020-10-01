@@ -1,0 +1,93 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"https"
+swagger	"2.0"
+info	
+description	"BloxOne LAD is an extension of the BloxOne Threat Defense Suite that provides lookalike domains detection. You can subscribe to BloxOne LAD and use its functionality to protect domains from spoofing threats.\n\n"
+title	"BloxOne LAD API"
+version	"v1"
+basePath	"/api/atclad/v1/"
+paths	
+/lookalike_domains	
+get	
+description	"Use this method to retrieve information on all detected Lookalike Domain objects with target domains specified by the account.\n"
+tags	
+0	"lookalike_domains"
+summary	"Lookalike Domain Lists."
+operationId	"lookalike_domainsListLookalikeDomain"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name           | type                           | Supported Ops               |\n| -------------- | ------------------------------ | --------------------------- |\n| reason         | string                         | ==, !=, ~, !~               |\n| target_domain  | string                         | ==, !=, ~, !~, >, <, <=, >= |\n| lookalike_host | string                         | ==, !=, ~, !~, >, <, <=, >= |\n| detected_at    | string (iso/rfc3339 timestamp) | ==, <, >, <=, >=            |\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcladLookalikeDomainReadMultiResponse"
+definitions	
+atcladLookalikeDomain	
+description	"Lookalike domain detection record"
+type	"object"
+title	"The Lookalike Domain object"
+properties	
+detected_at	
+description	"The time when this Lookalike Domain object was detected."
+type	"string"
+format	"date-time"
+readOnly	true
+lookalike_domain	
+description	"The lookalike domain."
+type	"string"
+readOnly	true
+lookalike_host	
+description	"The lookalike domain fqdn"
+type	"string"
+readOnly	true
+reason	
+description	"The reason why this domain looks alike the target domain."
+type	"string"
+readOnly	true
+target_domain	
+description	"The target domain this lookalike domain is associated to."
+type	"string"
+readOnly	true
+atcladLookalikeDomainReadMultiResponse	
+description	"The Lookalike Domain list response."
+type	"object"
+properties	
+results	
+description	"The list of Lookalike Domain objects."
+type	"array"
+items	
+$ref	"#/definitions/atcladLookalikeDomain"

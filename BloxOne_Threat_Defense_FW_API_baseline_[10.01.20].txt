@@ -1,0 +1,3800 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"https"
+swagger	"2.0"
+info	
+description	"BloxOne Threat Defense Cloud is an extension of the BloxOne Suite that provides visibility into infected and compromised off-premises devices, roaming users, remote sites, and branch offices. You can subscribe to BloxOne Cloud and use its functionality to mitigate and control malware as well as provide unprecedented insight into your network security posture and enable timely action. BloxOne Cloud also offers unified policy management, reporting, and threat analytics across the entire spectrum. Using automated and high-quality threat intelligence feeds and unique behavioral analytics, it automatically stops device communications with C&Cs/botnets and prevents DNS based data exfiltration.\n\nThe mission-critical DNS infrastructure can become a vulnerable component in your network when it is inadequately protected by traditional security solutions and consequently used as an attack surface. Compromised DNS services can result in catastrophic network and system failures. To fully protect your network in today’s cyber security threat environment, Infoblox sets a new DNS security standard by offering scalable, enterprise-grade, and integrated protection for your DNS infrastructure.\n\nThrough the Infoblox Cloud Services Portal, you can view the status of your subscription and threat intelligence feeds, manage your network scope and roaming end users, and learn more about threats on your networks through the Infoblox Threat Lookup tool and predefined reports.\n"
+title	"BloxOne FW API"
+version	"v1"
+basePath	"/api/atcfw/v1/"
+paths	
+/access_codes	
+get	
+description	"Use this method to retrieve a collection of Bypass Code object.\n"
+tags	
+0	"access_codes"
+summary	"List Access Codes"
+operationId	"access_codesListAccessCodes"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name               | type   | Supported Op                |\n| ------------------ | ------ | --------------------------- |\n| access_key         | string | !=, ==, ~, !~, >, <, <=, >= |\n| name               | string | !=, ==, ~, !~, >, <, <=, >= |\n| description        | string | !=, ==, ~, !~, >, <, <=, >= |\n| security_policy_id | int32  | !=, ==, >, <, <=, >=        |\n\nIn addition groupping operators are supported:\n\n| Op  | Description          |\n| --- | -------------------- |\n| and | Logical AND          |\n| or  | Logical OR           |\n| not | Logical NOT          |\n| ()  | Groupping Operators  |\n\nExample:\n```\n?_filter=\"((name=='acc_code')or(name~'key'))and(security_policy_id!=32)\"\n```\n"
+name	"_filter"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwAccessCodeMultiResponse"
+post	
+description	"Use this method to create the Bypass Code corresponding the security rules passed.\nIt's an atomic operation. It should create all the security rules, policy and bypass code,\nor do nothing if any of them fails.\n\nRequired:\n- name\n- rules\n- activation\n- expiration\n\n\n\n"
+tags	
+0	"access_codes"
+summary	"Create Access Codes"
+operationId	"access_codesCreateAccessCode"
+parameters	
+0	
+description	"The Bypass Code object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwAccessCode"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwAccessCodeCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- Expiration date must be after activation date\n- Cannot enter expired Bypass Code"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"rules' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- Threat Feed and TI rules must contain existing threat feeds and TI lists\n- Custom Redirect rules must contain existing Custom Redirect\n- Custom List rules must contain existing Custom List"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Invalid Rule: List 'custom-list-a.com' not found"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among bypass codes belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Bypass Code with name 'acc_code' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Bypass Code objects. Deletion of\nmultiple bypass codes is an all-or-nothing operation (if any of\nthe specified bypass codes cannot be deleted then none of the\nspecified bypass codes will be deleted).\n\nRequired:\n- ids\n\n\n"
+tags	
+0	"access_codes"
+summary	"Delete Access Codes"
+operationId	"access_codesDeleteAccessCodes"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwAccessCodeDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- Cannot delete bypass code assigned to policy"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing bypass code key"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Bypass Code does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/access_codes/{access_key}	
+get	
+description	"Use this method to retrieve the Bypass Code by key.\n\n"
+tags	
+0	"access_codes"
+summary	"Read Access Codes"
+operationId	"access_codesReadAccessCode"
+parameters	
+0	
+type	"string"
+description	"The Bypass Code identifier."
+name	"access_key"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwAccessCodeReadResponse"
+404	
+description	"\n- 'access_codes' value must contain existing bypass code key"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Bypass Code does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/access_codes/{payload.access_key}	
+put	
+description	"Use this method to update the Bypass Code corresponding the security rules passed.\nIt's an atomic operation. It should delete existing security rules and\ncreate all the new security rules for the bypass code,\nor do nothing if any of them fails.\n\nRequired:\n- name\n- rules\n- dfps\n- network_lists\n- roaming_device_groups\n\n\n\n"
+tags	
+0	"access_codes"
+summary	"Update Access Codes"
+operationId	"access_codesUpdateAccessCode"
+parameters	
+0	
+type	"string"
+name	"payload.access_key"
+in	"path"
+required	true
+1	
+description	"The Bypass Code object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwAccessCode"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwAccessCodeUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- Expiration date must be after activation date\n- Cannot enter expired Bypass Code"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"rules' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- Threat Feed and TI rules must contain existing threat feeds and TI lists\n- Custom Redirect rules must contain existing Custom Redirect\n- Custom List rules must contain existing Custom List"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Invalid Rule: List 'custom-list-a.com' not found"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among bypass codes belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Bypass Code with name 'acc_code' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/category_filters	
+get	
+description	"Use this method to retrieve information on all Category Filter objects for the account.\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter."
+tags	
+0	"category_filters"
+summary	"List Category Filters."
+operationId	"category_filtersListCategoryFilters"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwCategoryFilterMultiResponse"
+post	
+description	"Use this method to create a Category Filter object.\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter.\n\nRequired:\n- name\n- categories\n"
+tags	
+0	"category_filters"
+summary	"Create Category Filter."
+operationId	"category_filtersCreateCategoryFilter"
+parameters	
+0	
+description	"The Category Filter object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCategoryFilter"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwCategoryFilterCreateResponse"
+400	
+description	"\n- 'name' value must not be empty\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'categories' value must not be empty\n- 'categories' value must contain existing content categories"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+409	
+description	"\n- 'name' value must be unique among category filters belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"category_filter_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Category Filter objects. Deletion of multiple lists is an all-or-nothing operation (if any of the specified lists can not be deleted then none of the specified lists will be deleted).\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter.\n\nRequired:\n- ids\n"
+tags	
+0	"category_filters"
+summary	"Delete Category Filters."
+operationId	"category_filtersDeleteCategoryFilters"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCategoryFiltersDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n- category filters assigned to a security policy cannot be deleted"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing category filter identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Category Filter does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/category_filters/{id}	
+get	
+description	"Use this method to retrieve information on the specified Category Filter object.\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter.\n"
+tags	
+0	"category_filters"
+summary	"Read Category Filter."
+operationId	"category_filtersReadCategoryFilter"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Category Filter object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwCategoryFilterReadResponse"
+404	
+description	"\n- 'id' value must contain existing category filter identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Category Filter does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update the specified Category Filter object.\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter.\n\nRequired:\n- name\n- categories\n"
+tags	
+0	"category_filters"
+summary	"Update Category Filter."
+operationId	"category_filtersUpdateCategoryFilter"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Category Filter object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Category Filter object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCategoryFilter"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwCategoryFilterUpdateResponse"
+400	
+description	"\n- 'name' value must not be empty\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'categories' value must not be empty\n- 'categories' value must contain existing content categories"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing category filter identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Category Filter does not exist"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among category filters belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"category_filter_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/cert_download_urls	
+get	
+description	"Use this method to get certificates to use proxy server"
+tags	
+0	"certificate"
+summary	"Get Proxy Certificates"
+operationId	"certificateGetProxyCertificates"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwProxyCertResponse"
+/content_categories	
+get	
+description	"Use this method to retrieve information on all Content Category objects for the account.\n\nThe Content Category object represents a specific internet content and used to configure category filters. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content."
+tags	
+0	"content_categories"
+summary	"List Content Categories."
+operationId	"content_categoriesListContentCategories"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwContentCategoryMultiResponse"
+/custom_redirects	
+get	
+description	"Use this method to retrieve information on all Custom Redirect objects for the account.\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions."
+tags	
+0	"custom_redirects"
+summary	"List Custom Redirects."
+operationId	"custom_redirectsListCustomRedirect"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwCustomRedirectMultiResponse"
+post	
+description	"Use this method to create a Custom Redirect object.\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions.\n\nRequired:\n- name\n- data\n"
+tags	
+0	"custom_redirects"
+summary	"Create Custom Redirect."
+operationId	"custom_redirectsCreateCustomRedirect"
+parameters	
+0	
+description	"The Custom Redirect object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCustomRedirect"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwCustomRedirectCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'data' must contain a valid IPv4 address or domain name"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+409	
+description	"\n- 'name' value must be unique among named lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"custom_redirect_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Custom Redirect objects. Deletion of multiple lists is an all-or-nothing operation (if any of the specified lists can not be deleted then none of the specified lists will be deleted).\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions.\n\nRequired:\n- ids\n"
+tags	
+0	"custom_redirects"
+summary	"Delete Custom Redirect."
+operationId	"custom_redirectsDeleteCustomRedirect"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCustomRedirectDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n- custom redirects assigned to a security policy cannot be deleted"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing custom redirect identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Custom Redirect does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/custom_redirects/{id}	
+get	
+description	"Use this method to retrieve information on the specified Custom Redirect object.\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions.\n"
+tags	
+0	"custom_redirects"
+summary	"Read Custom Redirect."
+operationId	"custom_redirectsReadCustomRedirect"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Custom Redirect object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwCustomRedirectReadResponse"
+404	
+description	"\n- 'id' value must contain existing custom redirect identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Custom Redirect does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update a specified Custom Redirect object.\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions.\n\nRequired:\n- name\n- data\n"
+tags	
+0	"custom_redirects"
+summary	"Update Custom Redirect."
+operationId	"custom_redirectsUpdateCustomRedirect"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Custom Redirect object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Custom Redirect object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwCustomRedirect"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwCustomRedirectUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'data' must contain a valid IPv4 address or domain name"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing custom redirect identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Custom Redirect does not exist"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among named lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"custom_redirect_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/internal_domain_lists	
+get	
+description	"Use this method to retrieve information on all Internal Domains objects for the account.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure internal domains lists for specific DFP and ATEP groups. This lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as internal_domain_lists.\n"
+tags	
+0	"internal_domain_lists"
+summary	"List Internal Domains."
+operationId	"internal_domain_listsListInternalDomains"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name               | type   | Supported Op                |\n| ------------------ | ------ | --------------------------- |\n| id                 | int32  | !=, ==, >, <, <=, >=        |\n| name               | string | !=, ==, ~, !~, >, <, <=, >= |\n| description        | string | !=, ==, ~, !~, >, <, <=, >= |\n| items              | string | ~, !~                       |\n| is_default         | bool   | !=, ==                      |\n\nIn addition grouping operators are supported:\n\n| Op  | Description          |\n| --- | -------------------- |\n| and | Logical AND          |\n| or  | Logical OR           |\n| not | Logical NOT          |\n| ()  | Grouping Operators  |\n\nExample:\n```\n?_filter=\"((name=='internal_dom_a')or(name~'internal_dom_b'))\"\n```\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwInternalDomainsMultiResponse"
+post	
+description	"Use this method to create Internal Domains objects for the account.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure internal domains lists for specific DFP and ATEP groups. This lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as internal_domain_lists.\n\n\nRequired:\n- name\n- internal_domains\n\n"
+tags	
+0	"internal_domain_lists"
+summary	"Create Internal Domains."
+operationId	"internal_domain_listsCreateInternalDomains"
+parameters	
+0	
+description	"The Internal Domains object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwInternalDomains"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwInternalDomainsCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'internal_domains' must not contain existing Internal domain Lists\n- 'Non-empty lists'"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"internal_domains' must not be empty"
+status	
+type	"string"
+example	400
+409	
+description	"\n- 'name' value must be unique among internal domains lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Internal Domains with name 'int_dom_a' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Internal Domains objects for the account by a given list of internal domain list id.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure internal domains lists for specific DFP and ATEP groups. This lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as internal_domain_lists.\n\nRequired:\n- ids\n"
+tags	
+0	"internal_domain_lists"
+summary	"Delete Internal Domains."
+operationId	"internal_domain_listsDeleteInternalDomains"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwInternalDomainsDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"FAILED_PRECONDITION"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing internal domains identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Internal domains does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/internal_domain_lists/{id}	
+get	
+description	"Use this method to read Internal Domains objects for the account by a internal domain list id.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure internal domains lists for specific DFP and ATEP groups. This lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as internal_domain_lists.\n"
+tags	
+0	"internal_domain_lists"
+summary	"Read Internal Domains."
+operationId	"internal_domain_listsReadInternalDomains"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Internal Domains object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwInternalDomainsReadResponse"
+404	
+description	"\n- 'id' value must contain existing internal domain lists identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Internal Domain list does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update Internal Domains objects for the account by a internal domain list id.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure internal domains lists for specific DFP and ATEP groups. This lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as internal_domain_lists.\n\nRequired:\n- name\n- internal_domains\n"
+tags	
+0	"internal_domain_lists"
+summary	"Update Internal Domains."
+operationId	"internal_domain_listsUpdateInternalDomains"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Internal Domain object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Internal Domains object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwInternalDomains"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwInternalDomainsUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'internal_domains' must contain existing internal domain Lists\n- 'internal_domains' values is not a domain, cidr, or ip"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"name' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing internal domains list identifier\n"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Invalid Rule: List 'internal-dom-list-a.com' not found"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among internal domains belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Internal Domains with name 'int_domains_a' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/lookalike_targets	
+get	
+description	"Use this method to retrieve information on all Lookalike Target Domains for the account.\n\nThe Lookalike Target Domain are second-level domains BloxOne uses to detect lookalike FQDNs against\n"
+tags	
+0	"lookalike_targets"
+summary	"List Lookalike Target Domains."
+operationId	"lookalike_targetsListLookalikeTargets"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"A collection of response resources can be sorted by a space separated field-ordering pair.\n\nOrdering can be either 'asc' (for ascended order: 'A' to 'Z' for strings, and 0 to 9 for numbers) or 'desc' (for descended order).\n\nYou can sort by following fields:\n\n| Name             | description                            |\n| ---------------- | -------------------------------------- |\n| data             | Sort by items                          |\n| item_description | Sort by description in items_described |\n\nExample:\n```\n?_order_by=data asc\n```\n"
+name	"_order_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwLookalikeTargetsReadResponse"
+put	
+description	"Use this method to update existing list of Lookalike Target Domain. Note that duplicated items are silently skipped and only new items are appended to the Lookalike Target Domain list.\n\nThe Lookalike Target Domain are second-level domains BloxOne uses to detect lookalike FQDNs against\n"
+tags	
+0	"lookalike_targets"
+summary	"Update Lookalike Target Domains."
+operationId	"lookalike_targetsUpdateLookalikeTargets"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwLookalikeTargetsUpdateRequest"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwLookalikeTargetsUpdateResponse"
+400	
+description	"\n- 'items' value must contain only second level domain names where the second-level has length equal or greater than 5."
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"Lookalike watch domain must be a second-level domain longer than 4 characters"
+status	
+type	"string"
+example	400
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/named_lists	
+get	
+description	"Use this method to retrieve information on all Named List objects for the account. Note that list items are not returned for this operation.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted.\n\n"
+tags	
+0	"named_lists"
+summary	"List Named Lists."
+operationId	"named_listsListNamedLists"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name               | type   | Supported Ops    |\n| ------------------ | ------ | ---------------- |\n| type               | string | ==, !=           |\n| items              | string | ~, !~            |\n| items_described    | string | ==               |\n\nGroupping operators (and, or, not, ()) are not supported.\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListReadMultiResponse"
+post	
+description	"Use this method to create a Named List object.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted. Also use of the field 'items' is discouraged and instead use of new field 'item_described' is suggested as it is possible to add the description/comments to each item in the custom list using this field. In any case, note that use of both the fields 'items' and 'items_described' is not supported and when one of these field is used they must have some value i.e, it cannot be empty.\n\nRequired:\n- name\n- type\n- items or items_described\n"
+tags	
+0	"named_lists"
+summary	"Create Named List."
+operationId	"named_listsCreateNamedList"
+parameters	
+0	
+description	"The Named List object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNamedList"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'items' value must contain valid IPv4 addresses or domain names\n- named list of type \"dnsm\", \"threat_insight\", \"fast_flux\", and \"dga\" cannot be created\n- Either 'items' or 'items_described' field is required\n- 'item' cannot be empty in field items_described"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+409	
+description	"\n- 'name' value must be unique among named lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"named_list_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Named List objects. Deletion of multiple lists is an all-or-nothing operation (if any of the specified lists can not be deleted then none of the specified lists will be deleted).\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted.\n\nRequired:\n- ids\n"
+tags	
+0	"named_lists"
+summary	"Delete Named Lists."
+operationId	"named_listsDeleteNamedLists"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNamedListsDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n- named lists assigned to a security policy cannot be deleted\n- named lists of type 'dnsm', 'threat_insight', 'fast_flux', and 'dga' cannot be removed"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing named list identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/named_lists/{id}	
+get	
+description	"Use this method to retrieve information on the specified Named List object. Note that returned data includes list items.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted.\n"
+tags	
+0	"named_lists"
+summary	"Read Named List."
+operationId	"named_listsReadNamedList"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Named List identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListReadResponse"
+404	
+description	"\n- 'id' value must contain existing named list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update the specified Named List object. Note that list type cannot be updated.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted. Also use of the field 'items' is discouraged and instead use of new field 'item_described' is suggested as it is possible to add the description/comments to each item in the custom list using this field. In any case, note that use of both the fields 'items' and 'items_described' is not supported and when one of these field is used they must have some value i.e, it cannot be empty.\n\nRequired:\n- name\n- items or items_described\n"
+tags	
+0	"named_lists"
+summary	"Update Named List."
+operationId	"named_listsUpdateNamedList"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Named List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Named List object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNamedList"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'items' value must contain valid IPv4 addresses or domain names\n- named list of type \"dnsm\", \"threat_insight\", \"fast_flux\", and \"dga\" cannot be created\n- list type cannot be updated\n- Either 'items' or 'items_described' field is required\n- 'item' cannot be empty in field items_described"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing named list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among named lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"named_list_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+patch	
+description	"Use this method to update the Severity for a specified named list, which must be of TI list type.\n\nThe severity levels (threat_level and confidence_level) can only be patched for a given id of a TI List.\nThis patch request only accepts threat_level and confidence level as the attributes. At least one of these two attributes must be present in the request. If only one of the two attributes is present, only that attribute is set to the specified value for the specified list and other attribute will be at the present value.\nThis operation is currently applicable only for the TI Lists.\n\nRequired:\n- id\n- threat_level or confidence_level\n"
+tags	
+0	"named_lists"
+summary	"Patch TI List."
+operationId	"named_listsUpdateNamedListPartial"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Named List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Named List object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwListSeverityLevels"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListUpdateResponse"
+400	
+description	"\n- Either 'threat_level' or 'confidence_level' field is required\n- Operation not supported for type 'custom_list' or 'lookalike_domains'\n"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"Neither 'threat_level' nor 'confidence_level' exists in the request body"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing named list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+405	
+description	"\n- Only PATCH operation supported for the existing TI Lists"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_ALLOWED"
+message	
+type	"string"
+example	"Method not allowed"
+status	
+type	"string"
+example	405
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/named_lists/{id}/items	
+post	
+description	"Use this method to update existing items with new ones for a specified Named List object. Note that duplicated items are silently skipped and only new items are appended to the named list. Note that DNSM, TI, Fast Flux and DGA lists cannot be updated. Only Custom List items can be updated.\n\nThe Custom List Items represent the list of the FQDN or IPv4 addresses to define whitelists and blacklists for additional protection.\n"
+tags	
+0	"named_list_items"
+summary	"Insert Named List Items."
+operationId	"named_list_itemsInsertOrReplaceNamedListItems"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Named List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNamedListItemsInsertOrUpdateRequest"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwNamedListItemsInsertOrUpdateResponse"
+400	
+description	"\n- 'id' value must be greater than or equal to zero\n- 'items' value must contain either valid domain names or IPv4 or network addresses."
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"Invalid domain or IPv4 address or network '1.1.1'"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing named list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to remove items from a specified Named List object. Note that duplicated items are silently skipped and only new items are appended to the named list. Note that DNSM, TI, Fast Flux and DGA lists cannot be updated. Only Custom List items can be deleted.\n\nThe Custom List Items represent the list of the FQDN or IPv4 addresses to define whitelists and blacklists for additional protection.\n\nRequired:\n- items\n"
+tags	
+0	"named_list_items"
+summary	"Delete Named List Items."
+operationId	"named_list_itemsDeleteNamedListItems"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Named List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNamedListItemsDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'id' value must be greater than or equal to zero\n- 'items' value must contain either valid domain names or IPv4 or network addresses.\n- 'items' value must contain existing values for a specified named list"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"Invalid domain or IPv4 address or network '1.1.1'"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing custom list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/network_lists	
+get	
+description	"Use this method to retrieve information on all Network List objects for the account.\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks.\n"
+tags	
+0	"network_lists"
+summary	"List Network Lists."
+operationId	"network_listsListNetworkLists"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name                    | type   | Supported Op                |\n| ----------------------- | ------ | --------------------------- |\n| id                      | int32  | !=, ==, >, <, <=, >=        |\n| policy_id               | int32  | !=, ==, >, <, <=, >=        |\n| name                    | string | !=, ==, ~, !~, >, <, <=, >= |\n| description             | string | !=, ==, ~, !~, >, <, <=, >= |\n| default_security_policy | bool   | !=, ==                      |\n| items                   | string | >                           |\n\nIn addition groupping operators are supported:\n\n| Op  | Description          |\n| --- | -------------------- |\n| and | Logical AND          |\n| or  | Logical OR           |\n| not | Logical NOT          |\n| ()  | Groupping Operators  |\n\nAllowed sets of parameters that can be groupped in one query:\n\n- id, policy_id, name, description, default_security_policy\n- items\n\nExample:\n```\n?_filter=\"((name=='net_list1')or(name~'list_b'))and(default_security_policy!='true')\"\n```\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwNetworkListMultiResponse"
+post	
+description	"Use this method to create a Network List object.\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks.\n\nRequired:\n- name\n- items\n"
+tags	
+0	"network_lists"
+summary	"Create Network List."
+operationId	"network_listsCreateNetworkList"
+parameters	
+0	
+description	"The Network List object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNetworkList"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwNetworkListCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'name' value cannot be equal to 'All BloxOne Endpoints (Default)', 'All Networks (Default)', 'All DNS Forwarder Proxies (Default)'\n- 'description' length cannot exceed 256 characters limit\n- 'items' value must not be empty\n- 'items' value must contain valid CIDRs from range [24, 32]\n- CIDRs in 'items' cannot overlap with each other and with existing items for all accounts"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+409	
+description	"\n- 'name' value must be unique among network lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"network_list_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete the Network List objects. Deletion of multiple lists is an all-or-nothing operation (if any of the specified lists can not be deleted then none of the specified lists will be deleted).\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks.\n\nRequired:\n- ids\n"
+tags	
+0	"network_lists"
+summary	"Delete Network Lists."
+operationId	"network_listsDeleteNetworkLists"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNetworkListsDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n- network list that is assigned to a security policy cannot be deleted"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing network list identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Network List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/network_lists/{id}	
+get	
+description	"Use this method to retrieve information on the specified Network List object.\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks.\n"
+tags	
+0	"network_lists"
+summary	"Read Network List."
+operationId	"network_listsReadNetworkList"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Network List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwNetworkListReadResponse"
+404	
+description	"\n- 'id' value must contain existing network list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Network List does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update a specified Network List object.\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks.\n\nRequired:\n- name\n- items\n"
+tags	
+0	"network_lists"
+summary	"Update Network List."
+operationId	"network_listsUpdateNetworkList"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Network List object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Network List object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwNetworkList"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwNetworkListUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'name' value cannot be equal to 'All BloxOne Endpoints (Default)', 'All Networks (Default)', 'All DNS Forwarder Proxies (Default)'\n- 'description' length cannot exceed 256 characters limit\n- 'items' value must not be empty\n- 'items' value must contain valid CIDRs from range [24, 32]\n- CIDRs in 'items' cannot overlap with each other and with existing items for all accounts"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'name' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing network list identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Network List does not exist"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among network lists belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Cannot use duplicate name \"network_list_a\""
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/redirect_page	
+get	
+description	"Use this method to retrieve the Redirect Page object.\n\nWhen blocking users from accessing certain domains, you can redirect them to a page that delivers a default message about the action. You can also set a redirect page of your own or customize the redirect message."
+tags	
+0	"redirect_page"
+summary	"Read Redirect Page."
+operationId	"redirect_pageReadRedirectPage"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwRedirectPageReadResponse"
+put	
+description	"Use this method to update the Redirect Page object.\n\nWhen blocking users from accessing certain domains, you can redirect them to a page that delivers a default message about the action. You can also set a redirect page of your own or customize the redirect message.\n\nRequired:\n- type\n"
+tags	
+0	"redirect_page"
+summary	"Update Redirect Page."
+operationId	"redirect_pageUpdateRedirectPage"
+parameters	
+0	
+description	"The Redirect Page object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwUpdateRedirectPagePayload"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwRedirectPageUpdateResponse"
+400	
+description	"\n- 'type' value must contain valid redirect page type that is 'custom' or 'default'\n- 'content' length cannot exceed 262144 characters limit\n- 'redirect_ip_address' must contain valid IPv4 address"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'type' must not be empty"
+status	
+type	"string"
+example	400
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/security_policies	
+get	
+description	"Use this method to retrieve information on all Security Policy objects for the account.\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy.\n"
+tags	
+0	"security_policies"
+summary	"List Security Policies."
+operationId	"security_policiesListSecurityPolicies"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name               | type   | Supported Op                |\n| ------------------ | ------ | --------------------------- |\n| id                 | int32  | !=, ==, >, <, <=, >=        |\n| name               | string | !=, ==, ~, !~, >, <, <=, >= |\n| description        | string | !=, ==, ~, !~, >, <, <=, >= |\n| is_default         | bool   | !=, ==                      |\n\nIn addition groupping operators are supported:\n\n| Op  | Description          |\n| --- | -------------------- |\n| and | Logical AND          |\n| or  | Logical OR           |\n| not | Logical NOT          |\n| ()  | Groupping Operators  |\n\nExample:\n```\n?_filter=\"((name=='sec_policy_a')or(name~'policy_b'))and(is_default!='true')\"\n```\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyMultiResponse"
+post	
+description	"Use this method to create a Security Policy object. If no rule list is specified, the newly created Security Policy object will create these rules as a copy of default Security Policy rules (\"Default Global Policy\"). If rule list is provided it must contain at least the complete list of policy rules, including the rules based on all feeds that the account is entitled to. If no network list is specified, networking scope for this policy is empty, thus no action can be performed by this policy. Note that you are not allowed to add DNS Forwarding Proxies and Roaming Device Groups that are already assigned to a Security Policy different from \"Default Global Policy\", to assign them to this Security Policy object you should remove them from other Security Policy first.\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy.\n\nRequired:\n- name\n\n\n\n"
+tags	
+0	"security_policies"
+summary	"Create Security Policy."
+operationId	"security_policiesCreateSecurityPolicy"
+parameters	
+0	
+description	"The Security Policy object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwSecurityPolicy"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyCreateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'network_lists' must containt existing Network Lists\n- 'dfps' must contain existing DNS Forwarding Proxies\n- 'roaming_device_groups' must contain existing endpoint devices\n- 'network_lists' cannot contain Network Lists that are already assigned to another Security Policy\n- Network Lists for the Default Security Policy cannot be updated\n- 'dfps' cannot contain DNS Forwarding Proxies that are already assigned to another Security Policy\n- DNS Forwarding Proxies for the Default Security Policy cannot be updated\n- 'roaming_device_groups' cannot contain endpoint devices that are already assigned to another Security Policy\n- endpoint devices for the Default Security Policy cannot be updated\n- Threat Feed and TI rules must contain licensed threat feeds and TI lists\n- Threat Feed rules must be unique for the Security Policy\n- non-empty rule list must contain all licensed threat feeds and TI lists"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"rules' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- Threat Feed and TI rules must contain existing threat feeds and TI lists\n- Custom Redirect rules must contain existing Custom Redirect\n- Custom List rules must contain existing Custom List"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Invalid Rule: List 'custom-list-a.com' not found"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among security policies belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Security Policy with name 'sec_policy_a' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+delete	
+description	"Use this method to delete Security Policy objects. Deletion of multiple lists is an all-or-nothing operation (if any of the specified lists can not be deleted then none of the specified lists will be deleted).\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy.\n\nRequired:\n- ids\n"
+tags	
+0	"security_policies"
+summary	"Delete Security Policies."
+operationId	"security_policiesDeleteSecurityPolicy"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyDeleteRequest"
+responses	
+204	
+description	"No Content"
+400	
+description	"\n- 'ids' value must be non-empty\n- 'ids' value must contain unique elements\n- 'ids' value must contain values that are greater than or equal to zero\n- default security policy cannot be deleted"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"'ids' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'ids' value must contain existing security policy identifiers"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Security Policy does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/security_policies/{id}	
+get	
+description	"Use this method to retrieve information on the specified Security Policy object.\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy.\n"
+tags	
+0	"security_policies"
+summary	"Read Security Policy."
+operationId	"security_policiesReadSecurityPolicy"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Security Policy object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyReadResponse"
+404	
+description	"\n- 'id' value must contain existing security policy identifier"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Security Policy does not exist"
+status	
+type	"string"
+example	404
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+put	
+description	"Use this method to update a specified Network List object. The policy data supplied with the update request must have the complete list of policy rules, including the rules based on all feeds that the account is entitled to. If no network list is specified, networking scope for this policy is empty, thus no action can be performed by this policy. Note that you are not allowed to add DNS Forwarding Proxies and Roaming Device Groups that are already assigned to a Security Policy different from \"Default Global Policy\", to assign them to this Security Policy object you should remove them from other Security Policy first.\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy.\n\nRequired:\n- name\n- rules\n- dfps\n- network_lists\n- roaming_device_groups\n"
+tags	
+0	"security_policies"
+summary	"Update Security Policy."
+operationId	"security_policiesUpdateSecurityPolicy"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The Security Policy object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The Security Policy object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwSecurityPolicy"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyUpdateResponse"
+400	
+description	"\n- 'name' length cannot exceed 256 characters limit\n- 'description' length cannot exceed 256 characters limit\n- 'network_lists' must containt existing Network Lists\n- 'dfps' must contain existing DNS Forwarding Proxies\n- 'roaming_device_groups' must contain existing endpoint devices\n- 'network_lists' cannot contain Network Lists that are already assigned to another Security Policy\n- Network Lists for the Default Security Policy cannot be updated\n- 'dfps' cannot contain DNS Forwarding Proxies that are already assigned to another Security Policy\n- DNS Forwarding Proxies for the Default Security Policy cannot be updated\n- 'roaming_device_groups' cannot contain endpoint devices that are already assigned to another Security Policy\n- endpoint devices for the Default Security Policy cannot be updated\n- Threat Feed and TI rules must contain licensed threat feeds and TI lists\n- Threat Feed rules must be unique for the Security Policy\n- non-empty rule list must contain all licensed threat feeds and TI lists"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INVALID_ARGUMENT"
+message	
+type	"string"
+example	"rules' must not be empty"
+status	
+type	"string"
+example	400
+404	
+description	"\n- 'id' value must contain existing security policy identifier\n- Threat Feed and TI rules must contain existing threat feeds and TI lists\n- Custom Redirect rules must contain existing Custom Redirect\n- Custom List rules must contain existing Custom List"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"NOT_FOUND"
+message	
+type	"string"
+example	"Invalid Rule: List 'custom-list-a.com' not found"
+status	
+type	"string"
+example	404
+409	
+description	"\n- 'name' value must be unique among security policies belonging to the same account"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"ALREADY_EXISTS"
+message	
+type	"string"
+example	"Security Policy with name 'sec_policy_a' already exists"
+status	
+type	"string"
+example	409
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	
+type	"object"
+properties	
+code	
+type	"string"
+example	"INTERNAL"
+message	
+type	"string"
+example	"Internal Server Error"
+status	
+type	"string"
+example	500
+/security_policy_precedence	
+get	
+tags	
+0	"security_policy_precedence"
+summary	"ReadSecurityPolicyPrecedence retrieves the current policy precedence resource for the account."
+operationId	"security_policy_precedenceReadSecurityPolicyPrecedence"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyPrecedence"
+put	
+tags	
+0	"security_policy_precedence"
+summary	"UpdateSecurityPolicyPrecedence creates or completely replace the precedence resource."
+operationId	"security_policy_precedenceUpdateSecurityPolicyPrecedence"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyPrecedence"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyPrecedence"
+/security_policy_rules	
+get	
+description	"Use this method to retrieve information on all Security Policy Rule objects for the account.\n\nThe Security Policy Rule object represents a rule and action that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks.\n"
+tags	
+0	"security_policy_rules"
+summary	"List Security Policy Rules."
+operationId	"security_policy_rulesListSecurityPolicyRules"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name               | type   | Supported Ops    |\n| ------------------ | ------ | ---------------- |\n| policy_id          | int32  | ==, !=           |\n| list_id            | int32  | ==, !=           |\n| category_filter_id | int32  | ==, !=           |\n\nGroupping operators (and, or, not, ()) are not supported.\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwSecurityPolicyRuleMultiResponse"
+/threat_feeds	
+get	
+description	"Use this method to retrieve information on all Threat Feed objects for the account.\n\nBloxOne Cloud provides predefined threat intelligence feeds based on your subscription. The Plus subscription offers a few more feeds than the Standard subscription. The Advanced subscription offers a few more feeds than the Plus subscription. A threat feed subscription for RPZ updates offers protection against malicious hostnames."
+tags	
+0	"threat_feeds"
+summary	"List Threat Feeds."
+operationId	"threat_feedsListThreatFeeds"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcfwThreatFeedMultiResponse"
+definitions	
+atcfwAccessCode	
+type	"object"
+properties	
+access_key	
+type	"string"
+activation	
+description	"The time when the Bypass Code object was created."
+type	"string"
+format	"date-time"
+created_time	
+description	"The time when the Bypass Code object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+type	"string"
+expiration	
+description	"The time when the Bypass Code object was last updated."
+type	"string"
+format	"date-time"
+name	
+type	"string"
+policy_ids	
+type	"array"
+items	
+type	"integer"
+format	"int32"
+rules	
+description	"The list of selected security rules"
+type	"array"
+items	
+$ref	"#/definitions/atcfwAccessCodeRule"
+updated_time	
+description	"The time when the Bypass Code object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwAccessCodeCreateResponse	
+type	"object"
+properties	
+results	
+description	"The Bypass Code object."
+$ref	"#/definitions/atcfwAccessCode"
+atcfwAccessCodeDeleteRequest	
+type	"object"
+properties	
+ids	
+description	"The Bypass Code identifier."
+type	"array"
+items	
+type	"string"
+atcfwAccessCodeMultiResponse	
+type	"object"
+properties	
+results	
+description	"The list of Bypass Code objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwAccessCode"
+atcfwAccessCodeReadResponse	
+type	"object"
+properties	
+results	
+description	"The Bypass Code object."
+$ref	"#/definitions/atcfwAccessCode"
+atcfwAccessCodeRule	
+type	"object"
+properties	
+action	
+type	"string"
+data	
+type	"string"
+description	
+type	"string"
+redirect_name	
+type	"string"
+type	
+type	"string"
+atcfwAccessCodeUpdateResponse	
+type	"object"
+properties	
+results	
+description	"The Bypass Code object."
+$ref	"#/definitions/atcfwAccessCode"
+atcfwCategoryFilter	
+description	"The Category Filter object.\n\nCategory filters are content categorization rules that BloxOne Cloud uses to detect and filter specific internet content. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many sub-categories as you need. You then add the category filter to your security policy and assign the Block action for the filter."
+type	"object"
+properties	
+categories	
+description	"The list of content category names that falls into this category filter."
+type	"array"
+items	
+type	"string"
+example	
+0	"Web Ads"
+1	"Technical Information"
+created_time	
+description	"The time when this Category Filter object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the category filter."
+type	"string"
+example	"Category Filter A Description"
+id	
+description	"The Category Filter object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+name	
+description	"The name of the category filter."
+type	"string"
+example	"category_filter_a"
+policies	
+description	"The list of security policy names with which the category filter is associated."
+type	"array"
+items	
+type	"string"
+readOnly	true
+example	
+0	"security_policy_a"
+1	"security_policy_b"
+updated_time	
+description	"The time when this Category Filter object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwCategoryFilterCreateResponse	
+description	"The Category Filter create response."
+type	"object"
+properties	
+results	
+description	"The Category Filter object."
+$ref	"#/definitions/atcfwCategoryFilter"
+atcfwCategoryFilterMultiResponse	
+description	"The Category Filter list response."
+type	"object"
+properties	
+results	
+description	"The list of Category Filter objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwCategoryFilter"
+atcfwCategoryFilterReadResponse	
+description	"The Category Filter read response."
+type	"object"
+properties	
+results	
+description	"The Category Filter object."
+$ref	"#/definitions/atcfwCategoryFilter"
+atcfwCategoryFilterUpdateResponse	
+description	"The Category Filter update response."
+type	"object"
+properties	
+results	
+description	"The Category Filter object."
+$ref	"#/definitions/atcfwCategoryFilter"
+atcfwCategoryFiltersDeleteRequest	
+description	"The Category Filter delete request."
+type	"object"
+properties	
+ids	
+description	"The list of Category Filter object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwContentCategory	
+description	"The Content Category object.\n\nThe Content Category object represents a specific internet content and used to configure category filters. Based on your configuration, specific actions such as Allow or Block, will be taken on the detected content. BloxOne Cloud provides the following content categories from which you can build your category filters: Drugs, Risk/Fraud/Crime, Entertainment/Culture, Purchasing, Information/Communication, Business/Services, Information Technology, Lifestyle, Society/Education/Religion, Mature/Violent, Games/Gambling, Pornography/Nudity and Uncategorized. Each of these categories contains sub-categories that further define the respective content. When you configure your category filter, you can add as many categories and sub-categories as you need."
+type	"object"
+properties	
+category_code	
+description	"The category code."
+type	"integer"
+format	"int32"
+example	155
+category_name	
+description	"The name of the category."
+type	"string"
+example	"Weapons"
+functional_group	
+description	"The functional group name of the category."
+type	"string"
+example	"Mature/Violent"
+hierarchy	
+description	"The hierarchy name of the category."
+type	"integer"
+format	"int32"
+example	30
+risk_group	
+description	"The risk group name of the category."
+type	"string"
+example	"Propriety"
+atcfwContentCategoryMultiResponse	
+description	"The Content Category list response."
+type	"object"
+properties	
+results	
+description	"The list of Content Category objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwContentCategory"
+atcfwCustomRedirect	
+description	"The Custom Redirect object.\n\nYou can configure BloxOne Cloud to redirect traffic to the Infoblox redirect page or a custom redirect destination. BloxOne Cloud allows you to apply multiple redirect actions and integrate BloxOne Cloud with third-party proxies, secure web gateways, blackholes, honeypots and sinkhole solutions."
+type	"object"
+properties	
+created_time	
+description	"The time when this Custom Redirect object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+data	
+description	"The list of csv custom IPv4/IPv6 or a single domain redirect address."
+type	"string"
+example	"193.56.2.11, 193.56.2.12, 2001:db8:ffff:ffff:ffff:ffff:ffff:fff1"
+id	
+description	"The Custom Redirect object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+name	
+description	"The name of the custom redirect."
+type	"string"
+example	"custom_redirect_a"
+policy_ids	
+description	"The list of the security policy identifiers with which the named list is associated."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+readOnly	true
+example	
+0	245613
+1	12476
+policy_names	
+description	"The list of the security policy names with which the custom redirect is associated."
+type	"array"
+items	
+type	"string"
+readOnly	true
+example	
+0	"security_policy_a"
+1	"security_policy_b"
+updated_time	
+description	"The time when this Custom Redirect object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwCustomRedirectCreateResponse	
+description	"The Custom Redirect create response."
+type	"object"
+properties	
+results	
+description	"The Custom Redirect object."
+$ref	"#/definitions/atcfwCustomRedirect"
+atcfwCustomRedirectDeleteRequest	
+description	"The Custom Redirect delete request."
+type	"object"
+properties	
+ids	
+description	"The list of Custom Redirect object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwCustomRedirectMultiResponse	
+description	"The Custom Redirect list response."
+type	"object"
+properties	
+results	
+description	"The list of Custom Redirect objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwCustomRedirect"
+atcfwCustomRedirectReadResponse	
+description	"The Custom Redirect read response."
+type	"object"
+properties	
+results	
+description	"The Custom Redirect object."
+$ref	"#/definitions/atcfwCustomRedirect"
+atcfwCustomRedirectUpdateResponse	
+description	"The Custom Redirect update response."
+type	"object"
+properties	
+results	
+description	"The Custom Redirect object."
+$ref	"#/definitions/atcfwCustomRedirect"
+atcfwInternalDomains	
+description	"The Internal Domain List object.\n\nThe internal domain list is a transport object for reporting gathering internal domains. This feature allows users to configure bypass lists for specific DFP and ATEP groups. Bypass Lists provides the users to create ‘Internal Domains List’ objects with a name, description, and a list of domains/ip/cidr. These lists are referenced by and attached to DFP, and ATEP groups.\nOnce attached to DFP, dfp configuration endpoints will return the values under all associated domain lists as domains.\n\nOnce attached to ATEP, atep login endpoint will return the values under all associated lists as bypass_list."
+type	"object"
+properties	
+created_time	
+description	"The time when this Internal Domain lists object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the internal domain lists ."
+type	"string"
+example	"Internal Domain lists A description"
+id	
+description	"The Internal Domain object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+internal_domains	
+description	"The list of internal domains, should be unique to each other and has to be read-only from the API level"
+type	"array"
+items	
+type	"string"
+readOnly	true
+is_default	
+description	"True if name is 'Default Bypass Domains/CIDRs' otherwise false"
+type	"boolean"
+format	"boolean"
+name	
+description	"The name of the internal domain lists."
+type	"string"
+example	"internal_domains_lists"
+updated_time	
+description	"The time when this Internal domain lists object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwInternalDomainsCreateResponse	
+description	"The Internal Domains create response."
+type	"object"
+properties	
+results	
+description	"The Internal Domains object."
+$ref	"#/definitions/atcfwInternalDomains"
+atcfwInternalDomainsDeleteRequest	
+description	"The Internal Domains delete request."
+type	"object"
+properties	
+ids	
+description	"The list of InternalDomains object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwInternalDomainsMultiResponse	
+description	"The Internal domains list response."
+type	"object"
+properties	
+results	
+description	"The list of Internal Domains objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwInternalDomains"
+atcfwInternalDomainsReadResponse	
+description	"The Internal Domains read response."
+type	"object"
+properties	
+results	
+description	"The Internal Domains object."
+$ref	"#/definitions/atcfwInternalDomains"
+atcfwInternalDomainsUpdateResponse	
+description	"The Internal domains update response."
+type	"object"
+properties	
+results	
+description	"The Internal Domains object."
+$ref	"#/definitions/atcfwInternalDomains"
+atcfwItemStructs	
+description	"The Items Structure which contains the item and its description"
+type	"object"
+properties	
+description	
+description	"The description of the item"
+type	"string"
+example	"Item A description"
+item	
+description	"The data of the Item"
+type	"string"
+example	"example1.somdomain.com"
+atcfwListSeverityLevels	
+description	"The Payload for Patch Operation to update Threat/Confidence Levels in TI List"
+type	"object"
+properties	
+confidence_level	
+description	"The confidence level for a TI list."
+type	"string"
+example	
+0	"LOW"
+1	"MEDIUM"
+2	"HIGH"
+id	
+description	"The Named List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+threat_level	
+description	"The threat level for a TI List."
+type	"string"
+example	
+0	"INFO"
+1	"LOW"
+2	"MEDIUM"
+3	"HIGH"
+atcfwLookalikeTargetsReadResponse	
+description	"The Lookalike Target Domain List read response."
+type	"object"
+properties	
+results	
+description	"The Named List object containing target domain"
+$ref	"#/definitions/atcfwTargetDomainsList"
+atcfwLookalikeTargetsUpdateRequest	
+description	"The Lookalike Target Domain create or update request."
+type	"object"
+properties	
+fields	
+description	"Field Mask."
+$ref	"#/definitions/protobufFieldMask"
+items	
+description	"The list of the FQDN or IPv4 addresses to define whitelists and blacklists for additional protection."
+type	"array"
+items	
+type	"string"
+example	
+0	"example1.somedomain.com"
+items_described	
+description	"The List of ItemStructs structure which contains the item and its description"
+type	"array"
+items	
+$ref	"#/definitions/atcfwItemStructs"
+atcfwLookalikeTargetsUpdateResponse	
+description	"The Lookalike Target Domain create or update response."
+type	"object"
+properties	
+success	
+properties	
+code	
+type	"string"
+example	"UPDATED"
+status	
+type	"integer"
+format	"int32"
+example	201
+atcfwNamedList	
+description	"The Named List object.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed.\n\nNote that lists representing predefined TI feeds cannot be created, updated and deleted."
+type	"object"
+properties	
+confidence_level	
+description	"The confidence level for a custom list."
+type	"string"
+example	
+0	"LOW"
+1	"MEDIUM"
+2	"HIGH"
+created_time	
+description	"The time when this Named List object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the named list."
+type	"string"
+example	"Named List A Description"
+id	
+description	"The Named List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+item_count	
+description	"The number of items in this named list."
+type	"integer"
+format	"int32"
+readOnly	true
+example	24567
+items	
+description	"The list of the FQDN or IPv4 addresses to define whitelists and blacklists for additional protection."
+type	"array"
+items	
+type	"string"
+example	
+0	"example1.somedomain.com"
+1	"193.56.2.11"
+items_described	
+description	"The List of ItemStructs structure which contains the item and its description"
+type	"array"
+items	
+$ref	"#/definitions/atcfwItemStructs"
+name	
+description	"The name of the named list."
+type	"string"
+example	"named_list_a"
+policies	
+description	"The list of the security policy names with which the named list is associated."
+type	"array"
+items	
+type	"string"
+example	
+0	"security_policy_a"
+1	"security_policy_b"
+threat_level	
+description	"The threat level for a custom list."
+type	"string"
+example	
+0	"INFO"
+1	"LOW"
+2	"MEDIUM"
+3	"HIGH"
+type	
+description	"The type of the named list, that can be \"custom_list\", \"threat_insight\", \"fast_flux\", \"dga\", or \"dnsm\"."
+type	"string"
+enum	
+0	"custom_list"
+1	"threat_insight"
+2	"fast_flux"
+3	"dga"
+4	"dnsm"
+example	"custom_list"
+updated_time	
+description	"The time when this Named List object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwNamedListCreateResponse	
+description	"The Named List create response."
+type	"object"
+properties	
+results	
+description	"The Named List object."
+$ref	"#/definitions/atcfwNamedList"
+atcfwNamedListItemsDeleteRequest	
+description	"The Named List Items delete request."
+type	"object"
+properties	
+id	
+description	"The Named List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+items	
+description	"The list of named list items that are subject for delete operation."
+type	"array"
+items	
+type	"string"
+example	
+0	"example1.somedomain.com"
+1	"193.56.2.11"
+items_described	
+description	"The List of ItemStructs structure which contains the item and its description"
+type	"array"
+items	
+$ref	"#/definitions/atcfwItemStructs"
+atcfwNamedListItemsInsertOrUpdateRequest	
+description	"The Named List Items create or update request."
+type	"object"
+properties	
+fields	
+description	"Field Mask."
+$ref	"#/definitions/protobufFieldMask"
+id	
+description	"The Named List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+items	
+description	"The list of the FQDN or IPv4 addresses to define whitelists and blacklists for additional protection."
+type	"array"
+items	
+type	"string"
+example	
+0	"example1.somedomain.com"
+1	"193.56.2.11"
+items_described	
+description	"The List of ItemStructs structure which contains the item and its description"
+type	"array"
+items	
+$ref	"#/definitions/atcfwItemStructs"
+atcfwNamedListItemsInsertOrUpdateResponse	
+description	"The Named List Items create or update response."
+type	"object"
+properties	
+success	
+properties	
+code	
+type	"string"
+example	"UPDATED"
+status	
+type	"integer"
+format	"int32"
+example	201
+atcfwNamedListRead	
+description	"The Named List object.\n\nThe Named List object represents several types of lists allowed for BloxOne Cloud such as predefined threat intelligence feeds that your subscription offers (Threat Insight, Fast Flux, DGA, DNSM). In addition to the predefined threat intelligence feeds that your subscription offers, you can create custom lists (containing domains and IP addresses) to define whitelists and blacklists for additional protection. You can use a custom list to complement existing feeds or override the Block, Allow, Log, or Redirect action that is currently defined for an existing feed. Note that lists representing predefined TI feeds cannot be created, updated and deleted."
+type	"object"
+properties	
+confidence_level	
+description	"The confidence Level for a given custom list"
+type	"string"
+readOnly	true
+example	
+0	"LOW"
+1	"MEDIUM"
+2	"HIGH"
+created_time	
+description	"The time when this Named List object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the named list."
+type	"string"
+readOnly	true
+example	"Named List A Description"
+id	
+description	"The Named List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+item_count	
+description	"The number of items in this named list."
+type	"integer"
+format	"int32"
+readOnly	true
+example	24567
+name	
+description	"The name of the named list."
+type	"string"
+readOnly	true
+example	"named_list_a"
+policies	
+description	"The list of the security policy names with which the named list is associated."
+type	"array"
+items	
+type	"string"
+readOnly	true
+example	
+0	"security_policy_a"
+1	"security_policy_b"
+threat_level	
+description	"The threat Level for a given custom list"
+type	"string"
+readOnly	true
+example	
+0	"INFO"
+1	"LOW"
+2	"MEDIUM"
+3	"HIGH"
+type	
+description	"The type of the named list, that can be \"custom_list\", \"threat_insight\", \"fast_flux\", \"dga\", \"dnsm\", or \"lookalike_targets\"."
+type	"string"
+enum	
+0	"custom_list"
+1	"threat_insight"
+2	"fast_flux"
+3	"dga"
+4	"dnsm"
+5	"lookalike_targets"
+readOnly	true
+example	"custom_list"
+updated_time	
+description	"The time when this Named List object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwNamedListReadMultiResponse	
+description	"The Named List list response."
+type	"object"
+properties	
+results	
+description	"The list of Named List objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwNamedListRead"
+atcfwNamedListReadResponse	
+description	"The Named List read response."
+type	"object"
+properties	
+results	
+description	"The Named List object."
+$ref	"#/definitions/atcfwNamedList"
+atcfwNamedListUpdateResponse	
+description	"The Named List update response."
+type	"object"
+properties	
+results	
+description	"The Named List object."
+$ref	"#/definitions/atcfwNamedList"
+atcfwNamedListsDeleteRequest	
+description	"The Named List delete request."
+type	"object"
+properties	
+ids	
+description	"The list of Named List object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwNetAddrDfpAssignment	
+description	"Scoped DFP assignment to a policy, scoped via network address (CIDR)"
+type	"object"
+properties	
+addr_net	
+description	"network address in IPv4 CIDR (address/bitmask length) string format"
+type	"string"
+dfp_id	
+description	"Identifier of the associated DFP"
+type	"integer"
+format	"int32"
+atcfwNetworkList	
+description	"The Network List object.\n\nBefore you can apply security policies, you must first define the networks that you want to protect from malicious attacks. The first step in configuring BloxOne Cloud is to set up DNS Firewall by defining your remote networks. You identify these external networks by their IP addresses. A network can contain a group of IPv4 addresses or blocks."
+type	"object"
+properties	
+created_time	
+description	"The time when this Network List object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the network list."
+type	"string"
+example	"Network List A Description"
+id	
+description	"The Network List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+items	
+description	"The list of networks' CIDRs that are subject for malicious attacks protection."
+type	"array"
+items	
+type	"string"
+example	
+0	"156.2.3.0/24"
+1	"98.36.1.4/31"
+name	
+description	"The name of the network list."
+type	"string"
+example	"network_list_a"
+policy_id	
+description	"The identifier of the security policy with which the network list is associated."
+type	"integer"
+format	"int32"
+readOnly	true
+example	56321
+updated_time	
+description	"The time when this Network List object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwNetworkListCreateResponse	
+description	"The Network List create response."
+type	"object"
+properties	
+results	
+description	"The Network List object."
+$ref	"#/definitions/atcfwNetworkList"
+atcfwNetworkListMultiResponse	
+description	"The Network List list response."
+type	"object"
+properties	
+results	
+description	"The list of Network List objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwNetworkList"
+atcfwNetworkListReadResponse	
+description	"The Network List read response."
+type	"object"
+properties	
+results	
+description	"The Network List object."
+$ref	"#/definitions/atcfwNetworkList"
+atcfwNetworkListUpdateResponse	
+description	"The Network List update response."
+type	"object"
+properties	
+results	
+description	"The Network List object."
+$ref	"#/definitions/atcfwNetworkList"
+atcfwNetworkListsDeleteRequest	
+description	"The Network List delete request."
+type	"object"
+properties	
+ids	
+description	"The list of Network List object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwProxyCertResponse	
+type	"object"
+properties	
+certificate_url	
+type	"string"
+atcfwRangeAddrDfpAssignment	
+description	"Scoped DFP assignment to a policy, scoped via start/stop (inclusively) address range"
+type	"object"
+properties	
+addr_end	
+description	"end of the range: IP address as IPv4 string"
+type	"string"
+addr_start	
+description	"start of the range: IP address as IPv4 string"
+type	"string"
+dfp_id	
+description	"Identifier of the associated DFP"
+type	"integer"
+format	"int32"
+atcfwRedirectPage	
+description	"The Redirect Page object.\n\nWhen blocking users from accessing certain domains, you can redirect them to a page that delivers a default message about the action. You can also set a redirect page of your own or customize the redirect message."
+type	"object"
+properties	
+content	
+description	"The content of the redirect page for the \"custom\" redirect type."
+type	"string"
+example	"<!DOCTYPE html><html><body><h1>Redirect</h1></body></html>"
+created_time	
+description	"The time when this Redirect Page object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+redirect_ip_address	
+description	"The redirect IPv4 address."
+type	"string"
+example	"135.32.5.11"
+redirect_ipv6_address	
+description	"The redirect IPv6 address."
+type	"string"
+example	"2001:db8:ffff:ffff:ffff:ffff:ffff:ffff"
+smart	
+description	"Whether the redirect type is smart"
+type	"boolean"
+format	"boolean"
+type	
+description	"The type of the redirect page that can be \"default\" or \"custom\"."
+type	"string"
+enum	
+0	"default"
+1	"custom"
+example	"custom"
+updated_time	
+description	"The time when this Redirect Page object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwRedirectPageReadResponse	
+description	"The Redirect Page read response."
+type	"object"
+properties	
+results	
+description	"The Redirect Page object."
+$ref	"#/definitions/atcfwRedirectPage"
+atcfwRedirectPageUpdateResponse	
+description	"The Redirect Page update response."
+type	"object"
+properties	
+results	
+description	"The Redirect Page object."
+$ref	"#/definitions/atcfwRedirectPage"
+atcfwSecurityPolicy	
+description	"The Security Policy object.\n\nA security policy defines a set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks. When you create a new security policy, you first define a network scope to which you add networks, DNS forwarding proxies, and BloxOne Endpoint groups. BloxOne Cloud applies the security policy to all the entities that you include in the network scope. You can also include DNS forwarding proxies to which you want to apply the security policy.  After you define the network scope, you can add custom lists and category filters to the security policy. You can also specify actions for the added lists and filters, and to determine the precedence order for the entities. Depending on your subscription level, each security policy also comes with a set of predefined threat intelligence feeds and Threat Insight rules that are inherited from the default global policy. You cannot delete the inherited feeds and rules, but you can change their precedence order. For each policy you can define policy-level action (Default Action) gets applied when none of the policy rules apply/match. If an user really needs access to some blocked domain (web page) via a browser - there is a possibility to assign special bypass code(s) (Bypass Code) to any policy."
+type	"object"
+properties	
+access_codes	
+description	"Access codes assigned to Security Policy"
+type	"array"
+items	
+type	"string"
+created_time	
+description	"The time when this Security Policy object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+default_action	
+description	"The policy-level action gets applied when none of the policy rules apply/match.\nThe default value for default_action is \"action_allow\"."
+type	"string"
+example	"action_allow"
+default_redirect_name	
+description	"Name of the custom redirect, if the default_action is \"action_redirect\"."
+type	"string"
+example	"redirect_a"
+description	
+description	"The brief description for the security policy."
+type	"string"
+example	"Security Policy A Description"
+dfps	
+description	"The list of DNS Forwarding Proxy object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12456
+1	163211
+ecs	
+description	"Use ECS for handling policy"
+type	"boolean"
+format	"boolean"
+id	
+description	"The Security Policy object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+is_default	
+description	"Flag that indicates whether this is a default security policy."
+type	"boolean"
+format	"boolean"
+readOnly	true
+example	false
+name	
+description	"The name of the security policy."
+type	"string"
+example	"security_policy_a"
+net_address_dfps	
+description	"List of DFPs associated with this policy via network address (with corresponding network address)"
+type	"array"
+items	
+$ref	"#/definitions/atcfwNetAddrDfpAssignment"
+network_lists	
+description	"The list of Network Lists identifiers that represents networks that you want to protect from malicious attacks."
+type	"array"
+items	
+type	"integer"
+format	"int64"
+example	
+0	522436
+1	23465
+precedence	
+description	"The Security Policy object identifier."
+type	"integer"
+format	"int32"
+range_address_dfps	
+description	"List of DFPs associated with this policy via address range (with corresponding ranges)"
+type	"array"
+items	
+$ref	"#/definitions/atcfwRangeAddrDfpAssignment"
+roaming_device_groups	
+description	"The list of BloxOne Endpoint groups identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	56312
+1	461345
+rules	
+description	"The list of Security Policy Rules objects that represent the set of rules and actions that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks."
+type	"array"
+items	
+type	"object"
+$ref	"#/definitions/atcfwSecurityPolicyRule"
+updated_time	
+description	"The time when this Security Policy object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+user_groups	
+description	"List of user groups associated with this policy"
+type	"array"
+items	
+type	"string"
+atcfwSecurityPolicyCreateResponse	
+description	"The Security Policy create response."
+type	"object"
+properties	
+results	
+description	"The Security Policy object."
+$ref	"#/definitions/atcfwSecurityPolicy"
+atcfwSecurityPolicyDeleteRequest	
+description	"The Security Policy delete request."
+type	"object"
+properties	
+ids	
+description	"The list of Security Policy object identifiers."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+example	
+0	12345
+1	53215
+atcfwSecurityPolicyMultiResponse	
+description	"The Security Policy list response."
+type	"object"
+properties	
+results	
+description	"The list of Security Policy objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwSecurityPolicy"
+atcfwSecurityPolicyPrecedence	
+description	"The security policy precedence resource"
+type	"object"
+properties	
+policy_ids	
+description	"Ordered list of policy IDs.\nThe order corresponds to the relative policy precedence order."
+type	"array"
+items	
+type	"integer"
+format	"int32"
+atcfwSecurityPolicyReadResponse	
+description	"The Security Policy read response."
+type	"object"
+properties	
+results	
+description	"The Security Policy object."
+$ref	"#/definitions/atcfwSecurityPolicy"
+atcfwSecurityPolicyRule	
+description	"The Security Policy Rule object.\n\nThe Security Policy Rule object represents a rule and action that you define to balance access and constraints so you can mitigate malicious attacks and provide security for your networks."
+type	"object"
+properties	
+action	
+description	"The action for the policy rule that can be either \"action_allow\" or \"action_log\" or \"action_redirect\" or \"action_block\"."
+type	"string"
+example	"action_block"
+data	
+description	"The data source for the policy rule, that can be either a name of the predefined feed for \"named_feed\", custom list name for \"custom_list\" type and category filter name for \"category_filter\" type."
+type	"string"
+example	"custom_list_a"
+list_id	
+description	"The Custom List object identifier with which the policy rule is associated. 0 value means no custom list is associated with this policy rule."
+type	"integer"
+format	"int32"
+readOnly	true
+example	12345
+policy_id	
+description	"The identifier of the Security Policy object with which the policy rule is associated."
+type	"integer"
+format	"int32"
+readOnly	true
+example	12345
+policy_name	
+description	"The name of the security policy with which the policy rule is associated."
+type	"string"
+example	"security_policy_a"
+redirect_name	
+description	"The name of the redirect address for redirect actions that can be either IPv4 address or a domain name."
+type	"string"
+example	"redirect_a"
+type	
+description	"The policy rule type that can be either \"named_feed\" or \"custom_list\" or \"category_filter\"."
+type	"string"
+example	"custom_list"
+atcfwSecurityPolicyRuleMultiResponse	
+description	"The Security Policy Rule list response."
+type	"object"
+properties	
+results	
+description	"The list of Security Policy Rule objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwSecurityPolicyRule"
+atcfwSecurityPolicyUpdateResponse	
+description	"The Security Policy update response."
+type	"object"
+properties	
+results	
+description	"The Security Policy object."
+$ref	"#/definitions/atcfwSecurityPolicy"
+atcfwTargetDomainsList	
+description	"The Target Domains List object.\n\nThe Target Domains List object holds all second-level domains used to target for lookalike domain detections"
+type	"object"
+properties	
+created_time	
+description	"The time when this List object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+description	
+description	"The brief description for the list (always 'Auto-generated')."
+type	"string"
+example	"Auto-generated"
+id	
+description	"The List object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+item_count	
+description	"The number of items in this list."
+type	"integer"
+format	"int32"
+readOnly	true
+example	8
+items	
+description	"The list of the SLD to define target domains for lookalike detection"
+type	"array"
+items	
+type	"string"
+example	
+0	"example1.com"
+items_described	
+description	"The List of ItemStructs structure which contains the item and its description"
+type	"array"
+items	
+$ref	"#/definitions/atcfwItemStructs"
+name	
+description	"The name of the list (always 'Global Lookalike Target List')."
+type	"string"
+example	"Global Lookalike Target List"
+updated_time	
+description	"The time when this List object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcfwThreatFeed	
+description	"The Threat Feed object.\n\nBloxOne Cloud provides predefined threat intelligence feeds based on your subscription. The Plus subscription offers a few more feeds than the Standard subscription. The Advanced subscription offers a few more feeds than the Plus subscription. A threat feed subscription for RPZ updates offers protection against malicious hostnames."
+type	"object"
+properties	
+description	
+description	"The brief description for the thread feed."
+type	"string"
+readOnly	true
+example	"Threat Feed Description"
+key	
+description	"The TSIG key of the threat feed."
+type	"string"
+readOnly	true
+example	"etiqrisk"
+name	
+description	"The name of the thread feed."
+type	"string"
+readOnly	true
+example	"ETIQRisk"
+atcfwThreatFeedMultiResponse	
+description	"The Threat Feed list response."
+type	"object"
+properties	
+results	
+description	"The list of Threat Feed objects."
+type	"array"
+items	
+$ref	"#/definitions/atcfwThreatFeed"
+atcfwUpdateRedirectPagePayload	
+type	"object"
+properties	
+content	
+description	"The content of the redirect page for the \"custom\" redirect type."
+type	"string"
+example	"<!DOCTYPE html><html><body><h1>Redirect</h1></body></html>"
+smart	
+description	"Change the redirect page from non-proxy (smart == false) to proxy (smart)"
+type	"boolean"
+format	"boolean"
+type	
+description	"The type of the redirect page that can be \"default\" or \"custom\"."
+type	"string"
+enum	
+0	"default"
+1	"custom"
+example	"custom"
+protobufFieldMask	
+description	"paths: \"f.a\"\n    paths: \"f.b.d\"\n\nHere `f` represents a field in some root message, `a` and `b`\nfields in the message found in `f`, and `d` a field found in the\nmessage in `f.b`.\n\nField masks are used to specify a subset of fields that should be\nreturned by a get operation or modified by an update operation.\nField masks also have a custom JSON encoding (see below).\n\n# Field Masks in Projections\n\nWhen used in the context of a projection, a response message or\nsub-message is filtered by the API to only contain those fields as\nspecified in the mask. For example, if the mask in the previous\nexample is applied to a response message as follows:\n\n    f {\n      a : 22\n      b {\n        d : 1\n        x : 2\n      }\n      y : 13\n    }\n    z: 8\n\nThe result will not contain specific values for fields x,y and z\n(their value will be set to the default, and omitted in proto text\noutput):\n\n\n    f {\n      a : 22\n      b {\n        d : 1\n      }\n    }\n\nA repeated field is not allowed except at the last position of a\npaths string.\n\nIf a FieldMask object is not present in a get operation, the\noperation applies to all fields (as if a FieldMask of all fields\nhad been specified).\n\nNote that a field mask does not necessarily apply to the\ntop-level response message. In case of a REST get operation, the\nfield mask applies directly to the response, but in case of a REST\nlist operation, the mask instead applies to each individual message\nin the returned resource list. In case of a REST custom method,\nother definitions may be used. Where the mask applies will be\nclearly documented together with its declaration in the API.  In\nany case, the effect on the returned resource/resources is required\nbehavior for APIs.\n\n# Field Masks in Update Operations\n\nA field mask in update operations specifies which fields of the\ntargeted resource are going to be updated. The API is required\nto only change the values of the fields as specified in the mask\nand leave the others untouched. If a resource is passed in to\ndescribe the updated values, the API ignores the values of all\nfields not covered by the mask.\n\nIf a repeated field is specified for an update operation, the existing\nrepeated values in the target resource will be overwritten by the new values.\nNote that a repeated field is only allowed in the last position of a `paths`\nstring.\n\nIf a sub-message is specified in the last position of the field mask for an\nupdate operation, then the existing sub-message in the target resource is\noverwritten. Given the target message:\n\n    f {\n      b {\n        d : 1\n        x : 2\n      }\n      c : 1\n    }\n\nAnd an update message:\n\n    f {\n      b {\n        d : 10\n      }\n    }\n\nthen if the field mask is:\n\n paths: \"f.b\"\n\nthen the result will be:\n\n    f {\n      b {\n        d : 10\n      }\n      c : 1\n    }\n\nHowever, if the update mask was:\n\n paths: \"f.b.d\"\n\nthen the result would be:\n\n    f {\n      b {\n        d : 10\n        x : 2\n      }\n      c : 1\n    }\n\nIn order to reset a field's value to the default, the field must\nbe in the mask and set to the default value in the provided resource.\nHence, in order to reset all fields of a resource, provide a default\ninstance of the resource and set all fields in the mask, or do\nnot provide a mask as described below.\n\nIf a field mask is not present on update, the operation applies to\nall fields (as if a field mask of all fields has been specified).\nNote that in the presence of schema evolution, this may mean that\nfields the client does not know and has therefore not filled into\nthe request will be reset to their default. If this is unwanted\nbehavior, a specific service may require a client to always specify\na field mask, producing an error if not.\n\nAs with get operations, the location of the resource which\ndescribes the updated values in the request message depends on the\noperation kind. In any case, the effect of the field mask is\nrequired to be honored by the API.\n\n## Considerations for HTTP REST\n\nThe HTTP kind of an update operation which uses a field mask must\nbe set to PATCH instead of PUT in order to satisfy HTTP semantics\n(PUT must only be used for full updates).\n\n# JSON Encoding of Field Masks\n\nIn JSON, a field mask is encoded as a single string where paths are\nseparated by a comma. Fields name in each path are converted\nto/from lower-camel naming conventions.\n\nAs an example, consider the following message declarations:\n\n    message Profile {\n      User user = 1;\n      Photo photo = 2;\n    }\n    message User {\n      string display_name = 1;\n      string address = 2;\n    }\n\nIn proto a field mask for `Profile` may look as such:\n\n    mask {\n      paths: \"user.display_name\"\n      paths: \"photo\"\n    }\n\nIn JSON, the same mask is represented as below:\n\n    {\n      mask: \"user.displayName,photo\"\n    }\n\n# Field Masks and Oneof Fields\n\nField masks treat fields in oneofs just as regular fields. Consider the\nfollowing message:\n\n    message SampleMessage {\n      oneof test_oneof {\n        string name = 4;\n        SubMessage sub_message = 9;\n      }\n    }\n\nThe field mask can be:\n\n    mask {\n      paths: \"name\"\n    }\n\nOr:\n\n    mask {\n      paths: \"sub_message\"\n    }\n\nNote that oneof type names (\"test_oneof\" in this case) cannot be used in\npaths.\n\n## Field Mask Verification\n\nThe implementation of the all the API methods, which have any FieldMask type\nfield in the request, should verify the included field paths, and return\n`INVALID_ARGUMENT` error if any path is duplicated or unmappable."
+type	"object"
+title	"`FieldMask` represents a set of symbolic field paths, for example:"
+properties	
+paths	
+description	"The set of field mask paths."
+type	"array"
+items	
+type	"string"

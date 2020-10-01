@@ -1,0 +1,3244 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"http"
+1	"https"
+swagger	"2.0"
+info	
+description	"The DNS application is a BloxOne DDI service that provides cloud-based DNS configuration with on-prem host serving DNS protocol. It is part of the full-featured BloxOne DDI solution that enables customers the ability to deploy large numbers of protocol servers in the delivery of DNS and DHCP throughout their enterprise network. \n\n"
+title	"DNS Configuration API"
+version	"v1"
+basePath	"/api/ddi/v1/"
+paths	
+/dns/acl	
+get	
+description	"Use this method to list ACL objects.\nACL object (dns/acl) represents a named Access Control List."
+tags	
+0	"acl"
+summary	"List ACL objects."
+operationId	"aclList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListACLResponse"
+post	
+description	"Use this method to create an ACL object.\nACL object (dns/acl) represents a named Access Control List."
+tags	
+0	"acl"
+summary	"Create the ACL object."
+operationId	"aclCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configACL"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateACLResponse"
+/dns/acl/{id}	
+get	
+description	"Use this method to read an ACL object.\nACL object (dns/acl) represents a named Access Control List."
+tags	
+0	"acl"
+summary	"Read the ACL object."
+operationId	"aclRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadACLResponse"
+delete	
+description	"Use this method to delete an ACL object.\nACL object (dns/acl) represents a named Access Control List."
+tags	
+0	"acl"
+summary	"Delete the ACL object."
+operationId	"aclDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update an ACL object.\nACL object (dns/acl) represents a named Access Control List."
+tags	
+0	"acl"
+summary	"Update the ACL object."
+operationId	"aclUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configACL"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateACLResponse"
+/dns/auth_nsg	
+get	
+description	"Use this method to list Auth NSG objects.\nThe Auth NSG object represents authoritative nameserver group."
+tags	
+0	"auth_nsg"
+summary	"List Auth NSG objects."
+operationId	"auth_nsgList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListAuthNSGResponse"
+post	
+description	"Use this method to create an Auth NSG object.\nThe Auth NSG object represents authoritative nameserver group."
+tags	
+0	"auth_nsg"
+summary	"Create the Auth NSG object."
+operationId	"auth_nsgCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configAuthNSG"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateAuthNSGResponse"
+/dns/auth_nsg/{id}	
+get	
+description	"Use this method to read an Auth NSG object.\nThe Auth NSG object represents authoritative nameserver group."
+tags	
+0	"auth_nsg"
+summary	"Read the Auth NSG object."
+operationId	"auth_nsgRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadAuthNSGResponse"
+delete	
+description	"Use this method to delete an Auth NSG object.\nThe Auth NSG object represents authoritative nameserver group."
+tags	
+0	"auth_nsg"
+summary	"Delete the Auth NSG object."
+operationId	"auth_nsgDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update an Auth NSG object.\nThe Auth NSG object represents authoritative nameserver group."
+tags	
+0	"auth_nsg"
+summary	"Update the Auth NSG object."
+operationId	"auth_nsgUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configAuthNSG"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateAuthNSGResponse"
+/dns/auth_zone	
+get	
+description	"Use this method to list an Auth Zone objects.\nThis object (dns/auth_zone) represents an authoritative zone."
+tags	
+0	"auth_zone"
+summary	"List Auth Zone objects."
+operationId	"auth_zoneList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListAuthZoneResponse"
+post	
+description	"Use this method to create an Auth Zone object.\nThis object (dns/auth_zone) represents an authoritative zone."
+tags	
+0	"auth_zone"
+summary	"Create the Auth Zone object."
+operationId	"auth_zoneCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configAuthZone"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateAuthZoneResponse"
+/dns/auth_zone/{id}	
+get	
+description	"Use this method to read an Auth Zone object.\nThis object (dns/auth_zone) represents an authoritative zone."
+tags	
+0	"auth_zone"
+summary	"Read the Auth Zone object."
+operationId	"auth_zoneRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadAuthZoneResponse"
+delete	
+description	"Use this method to delete an Auth Zone object.\nThis object (dns/auth_zone) represents an authoritative zone."
+tags	
+0	"auth_zone"
+summary	"Delete the Auth Zone object."
+operationId	"auth_zoneDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update an Auth Zone object.\nThis object (dns/auth_zone) represents an authoritative zone."
+tags	
+0	"auth_zone"
+summary	"Update the Auth Zone object."
+operationId	"auth_zoneUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configAuthZone"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateAuthZoneResponse"
+/dns/convert_domain_name/{domain_name}	
+get	
+description	"Use this method to to convert between Internationalized Domain Name (IDN) and ASCII domain name (Punycode)."
+tags	
+0	"convert_domain_name"
+summary	"Convert the object."
+operationId	"convert_domain_nameConvert"
+parameters	
+0	
+type	"string"
+description	"Input domain name in either of IDN or punycode representations."
+name	"domain_name"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configConvertDomainNameResponse"
+/dns/convert_rname/{email_address}	
+get	
+description	"Use this method to to convert email address to the master file RNAME format."
+tags	
+0	"convert_rname"
+summary	"Convert the object."
+operationId	"convert_rnameConvertRName"
+parameters	
+0	
+type	"string"
+description	"Input email address."
+name	"email_address"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configConvertRNameResponse"
+/dns/forward_nsg	
+get	
+description	"Use this method to list Forward NSG objects.\nThe Forward NSG object represents nameserver group for forward zones."
+tags	
+0	"forward_nsg"
+summary	"List Forward NSG objects."
+operationId	"forward_nsgList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListForwardNSGResponse"
+post	
+description	"Use this method to create a Forward NSG object.\nThe Forward NSG object represents nameserver group for forward zones."
+tags	
+0	"forward_nsg"
+summary	"Create the Forward NSG object."
+operationId	"forward_nsgCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configForwardNSG"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateForwardNSGResponse"
+/dns/forward_nsg/{id}	
+get	
+description	"Use this method to read a Forward NSG object.\nThe Forward NSG object represents nameserver group for forward zones."
+tags	
+0	"forward_nsg"
+summary	"Read the Forward NSG object."
+operationId	"forward_nsgRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadForwardNSGResponse"
+delete	
+description	"Use this method to delete a Forward NSG object.\nThe Forward NSG object represents nameserver group for forward zones."
+tags	
+0	"forward_nsg"
+summary	"Delete the Forward NSG object."
+operationId	"forward_nsgDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update a Forward NSG object.\nThe Forward NSG object represents nameserver group for forward zones."
+tags	
+0	"forward_nsg"
+summary	"Update the Forward NSG object."
+operationId	"forward_nsgUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configForwardNSG"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateForwardNSGResponse"
+/dns/forward_zone	
+get	
+description	"Use this method to list Forward Zone objects.\nThis object (dns/forward_zone) represents a forwarding zone."
+tags	
+0	"forward_zone"
+summary	"List Forward Zone objects."
+operationId	"forward_zoneList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListForwardZoneResponse"
+post	
+description	"Use this method to create a Forward Zone object.\nThis object (dns/forward_zone) represents a forwarding zone."
+tags	
+0	"forward_zone"
+summary	"Create the Forward Zone object."
+operationId	"forward_zoneCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configForwardZone"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateForwardZoneResponse"
+/dns/forward_zone/{id}	
+get	
+description	"Use this method to read a Forward Zone object.\nThis object (dns/forward_zone) represents a forwarding zone."
+tags	
+0	"forward_zone"
+summary	"Read the Forward Zone object."
+operationId	"forward_zoneRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadForwardZoneResponse"
+delete	
+description	"Use this method to delete a Forward Zone object.\nThis object (dns/forward_zone) represents a forwarding zone."
+tags	
+0	"forward_zone"
+summary	"Delete the Forward Zone object."
+operationId	"forward_zoneDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update a Forward Zone object.\nThis object (dns/forward_zone) represents a forwarding zone."
+tags	
+0	"forward_zone"
+summary	"Update the Forward Zone object."
+operationId	"forward_zoneUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configForwardZone"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateForwardZoneResponse"
+/dns/global	
+get	
+description	"Use this method to read the Global configuration object.\nService operates on Global singleton object that represents parent configuration settings for inheritance."
+tags	
+0	"global"
+summary	"Read the Global configuration object."
+operationId	"globalRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadGlobalResponse"
+patch	
+description	"Use this method to update the Global configuration object.\nService operates on Global singleton object that represents parent configuration settings for inheritance."
+tags	
+0	"global"
+summary	"Update the Global configuration object."
+operationId	"globalUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configGlobal"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateGlobalResponse"
+/dns/global/{id}	
+get	
+description	"Use this method to read the Global configuration object.\nService operates on Global singleton object that represents parent configuration settings for inheritance."
+tags	
+0	"global"
+summary	"Read the Global configuration object."
+operationId	"globalRead2"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadGlobalResponse"
+patch	
+description	"Use this method to update the Global configuration object.\nService operates on Global singleton object that represents parent configuration settings for inheritance."
+tags	
+0	"global"
+summary	"Update the Global configuration object."
+operationId	"globalUpdate2"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configGlobal"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateGlobalResponse"
+/dns/host	
+get	
+description	"Use this method to list DNS Host objects.\nA DNS Host object associates DNS configuration with hosts."
+tags	
+0	"host"
+summary	"List DNS Host objects."
+operationId	"hostList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListHostResponse"
+/dns/host/{id}	
+get	
+description	"Use this method to read a DNS Host object.\nA DNS Host object associates DNS configuration with hosts."
+tags	
+0	"host"
+summary	"Read the DNS Host object."
+operationId	"hostRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadHostResponse"
+patch	
+description	"Use this method to update a DNS Host object.\nA DNS Host object associates DNS configuration with hosts."
+tags	
+0	"host"
+summary	"Update the DNS Host object."
+operationId	"hostUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configHost"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateHostResponse"
+/dns/server	
+get	
+description	"Use this method to list Server objects.\nA Server configuration. Named configuration for a specific host."
+tags	
+0	"server"
+summary	"List Server objects."
+operationId	"serverList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListServerResponse"
+post	
+description	"Use this method to create a Server object.\nA Server configuration. Named configuration for a specific host."
+tags	
+0	"server"
+summary	"Create the Server object."
+operationId	"serverCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configServer"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateServerResponse"
+/dns/server/{id}	
+get	
+description	"Use this method to read a Server object.\nA Server configuration. Named configuration for a specific host."
+tags	
+0	"server"
+summary	"Read the Server object."
+operationId	"serverRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadServerResponse"
+delete	
+description	"Use this method to delete a Server object.\nA Server configuration. Named configuration for a specific host."
+tags	
+0	"server"
+summary	"Delete the Server object."
+operationId	"serverDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update a Server object.\nA Server configuration. Named configuration for a specific host."
+tags	
+0	"server"
+summary	"Update the Server object."
+operationId	"serverUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configServer"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateServerResponse"
+/dns/view	
+get	
+description	"Use this method to list View objects.\nNamed collection of DNS View settings."
+tags	
+0	"view"
+summary	"List View objects."
+operationId	"viewList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+2	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+4	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+5	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configListViewResponse"
+post	
+description	"Use this method to create a View object.\nNamed collection of DNS View settings."
+tags	
+0	"view"
+summary	"Create the View object."
+operationId	"viewCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configView"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/configCreateViewResponse"
+/dns/view/{id}	
+get	
+description	"Use this method to read a View object.\nNamed collection of DNS View settings."
+tags	
+0	"view"
+summary	"Read the View object."
+operationId	"viewRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/configReadViewResponse"
+delete	
+description	"Use this method to delete a View object.\nNamed collection of DNS View settings."
+tags	
+0	"view"
+summary	"Delete the View object."
+operationId	"viewDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update a View object.\nNamed collection of DNS View settings."
+tags	
+0	"view"
+summary	"Update the View object."
+operationId	"viewUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/configView"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/configUpdateViewResponse"
+definitions	
+configACL	
+description	"Named ACL (Access Control List)."
+type	"object"
+title	"ACL"
+required	
+0	"name"
+properties	
+comment	
+description	"Optional. Comment for ACL."
+type	"string"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+list	
+description	"Optional. Ordered list of access control elements.\n\nElements are evaluated in order to determine access. If evaluation reaches the end of the list then access is denied."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+name	
+description	"Required. ACL object name."
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+configACLItem	
+description	"Element in an ACL. \n\nError if both acl and address are given."
+type	"object"
+title	"ACLItem"
+required	
+0	"element"
+1	"access"
+properties	
+access	
+description	"Required. Access permission for element.\n\nAllowed values:\n- allow\n- deny"
+type	"string"
+acl	
+description	"The resource identifier."
+type	"string"
+address	
+description	"Optional. Data for ip element.\n\nMust be empty if element is not \"ip\"."
+type	"string"
+element	
+description	"Required. Type of element.\n\nAllowed values:\n- any\n- ip\n- acl"
+type	"string"
+configAuthNSG	
+description	"Authoritative nameserver group."
+type	"object"
+title	"AuthNSG"
+required	
+0	"name"
+properties	
+comment	
+description	"Optional. Comment for NSG object."
+type	"string"
+external_primaries	
+description	"Optional. DNS primaries external to BloxOne DDI. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configExternalPrimary"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+internal_secondaries	
+description	"Optional. BloxOne DDI hosts acting as internal secondaries. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configInternalSecondary"
+name	
+description	"Required. Name of NSG object."
+type	"string"
+nsgs	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+configAuthZone	
+description	"Authoritative zone."
+type	"object"
+title	"AuthZone"
+required	
+0	"fqdn"
+1	"primary_type"
+properties	
+comment	
+description	"Optional. Comment for zone configuration."
+type	"string"
+disabled	
+description	"Optional. True to disable object. A disabled object is effectively non-existent when generating configuration."
+type	"boolean"
+format	"boolean"
+external_primaries	
+description	"Optional. DNS primaries external to BloxOne DDI. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configExternalPrimary"
+fqdn	
+description	"Required. Zone FQDN.\nThe FQDN supplied at creation will be converted to canonical form.\n\nRead-only after creation."
+type	"string"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+inheritance_assigned_hosts	
+description	"Read-only. The list of the inheritance assigned hosts of the object."
+type	"array"
+items	
+$ref	"#/definitions/inheritance2AssignedHost"
+inheritance_sources	
+title	"inheritance fields"
+$ref	"#/definitions/configAuthZoneInheritance"
+initial_soa_serial	
+description	"On-create-only. SOA serial is allowed to be set when the auth zone is created."
+type	"integer"
+format	"int64"
+internal_secondaries	
+description	"Optional. BloxOne DDI hosts acting as internal secondaries. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configInternalSecondary"
+mapped_subnet	
+description	"Read-only. Reverse zone network address in the following format: <ip-address>/<cidr>.\nDefaults to empty."
+type	"string"
+mapping	
+description	"Read-only. Zone mapping type.\nAllowed values:\n- forward\n- ipv4_reverse\nDefaults to forward."
+type	"string"
+nsgs	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+parent	
+description	"The resource identifier."
+type	"string"
+primary_type	
+description	"Required. Primary type for an auth zone.\nRead only after creation.\nAllowed values:\n- external: zone data owned by some external to IB nameserver.\n- cloud: zone data is owned by N* cloud."
+type	"string"
+protocol_fqdn	
+description	"Read only. Zone FQDN in punycode."
+type	"string"
+query_acl	
+description	"Optional. Clients must match this ACL to make authoritative queries.\nAlso used for recursive queries if that ACL is unset.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+tags	
+description	"Tagging specifics."
+$ref	"#/definitions/typesJSONValue"
+transfer_acl	
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+update_acl	
+description	"Optional. Specifies which hosts are allowed to submit Dynamic DNS\nupdates for auth zones of primary_type \"cloud\".\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+use_forwarders_for_subzones	
+description	"Optional. Use default forwarders to resolve queries for subzones.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+view	
+description	"The resource identifier."
+type	"string"
+zone_authority	
+description	"Optional. ZoneAuthority."
+$ref	"#/definitions/configZoneAuthority"
+configAuthZoneInheritance	
+type	"object"
+properties	
+query_acl	
+description	"Optional. Field config for query_acl field from [AuthZone] object."
+$ref	"#/definitions/configInheritedACLItems"
+transfer_acl	
+description	"Optional. Field config for transfer_acl field from [AuthZone] object."
+$ref	"#/definitions/configInheritedACLItems"
+update_acl	
+description	"Optional. Field config for update_acl field from [AuthZone] object."
+$ref	"#/definitions/configInheritedACLItems"
+use_forwarders_for_subzones	
+description	"Optional. Field config for use_forwarders_for_subzones field from [AuthZone] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+zone_authority	
+description	"Optional. Field config for zone_authority field from [AuthZone] object."
+$ref	"#/definitions/configInheritedZoneAuthority"
+configConvertDomainName	
+description	"Used to convert between Internationalized Domain Name (IDN) and ASCII domain name (Punycode)."
+type	"object"
+title	"ConvertDomainName"
+properties	
+idn	
+description	"IDN domain name representation."
+type	"string"
+punycode	
+description	"punycode domain name representation."
+type	"string"
+configConvertDomainNameResponse	
+description	"The ConvertDomainName object convert response format."
+type	"object"
+title	"ConvertDomainNameResponse"
+properties	
+result	
+description	"The ConvertDomainName object."
+$ref	"#/definitions/configConvertDomainName"
+configConvertRNameResponse	
+type	"object"
+properties	
+rname	
+description	"The SOA RNAME field converted from the provided email address."
+type	"string"
+configCreateACLResponse	
+description	"The ACL object create response format."
+type	"object"
+title	"CreateACLResponse"
+properties	
+result	
+description	"The created ACL object."
+$ref	"#/definitions/configACL"
+configCreateAuthNSGResponse	
+description	"The Auth NSG object create response format."
+type	"object"
+title	"CreateAuthNSGResponse"
+properties	
+result	
+description	"The created Auth NSG object."
+$ref	"#/definitions/configAuthNSG"
+configCreateAuthZoneResponse	
+description	"The Auth Zone object create response format."
+type	"object"
+title	"CreateAuthZoneResponse"
+properties	
+result	
+description	"The created AuthZone object."
+$ref	"#/definitions/configAuthZone"
+configCreateForwardNSGResponse	
+description	"The Forward NSG object create response format."
+type	"object"
+title	"CreateForwardNSGResponse"
+properties	
+result	
+description	"The created Forward NSG object."
+$ref	"#/definitions/configForwardNSG"
+configCreateForwardZoneResponse	
+description	"The Forward Zone object create response format."
+type	"object"
+title	"CreateForwardZoneResponse"
+properties	
+result	
+description	"The created Forward Zone object."
+$ref	"#/definitions/configForwardZone"
+configCreateServerResponse	
+description	"The Server object create response format."
+type	"object"
+title	"CreateServerResponse"
+properties	
+result	
+description	"The created Server object."
+$ref	"#/definitions/configServer"
+configCreateViewResponse	
+description	"The View object create response format."
+type	"object"
+title	"CreateViewResponse"
+properties	
+result	
+description	"The created View object."
+$ref	"#/definitions/configView"
+configCustomRootNSBlock	
+description	"Block for fields: custom_root_ns_enabled, custom_root_ns."
+type	"object"
+title	"CustomRootNSBlock"
+properties	
+custom_root_ns	
+description	"Optional. Field config for custom_root_ns field."
+type	"array"
+items	
+$ref	"#/definitions/configRootNS"
+custom_root_ns_enabled	
+description	"Optional. Field config for custom_root_ns_enabled field."
+type	"boolean"
+format	"boolean"
+configDNSSECValidationBlock	
+description	"Block for fields: dnssec_enabled, dnssec_enable_validation, dnssec_validate_expiry, dnssec_trust_anchors."
+type	"object"
+title	"DNSSECValidationBlock"
+properties	
+dnssec_enable_validation	
+description	"Optional. Field config for dnssec_enable_validation field."
+type	"boolean"
+format	"boolean"
+dnssec_enabled	
+description	"Optional. Field config for dnssec_enabled field."
+type	"boolean"
+format	"boolean"
+dnssec_trust_anchors	
+description	"Optional. Field config for dnssec_trust_anchors field."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_validate_expiry	
+description	"Optional. Field config for dnssec_validate_expiry field."
+type	"boolean"
+format	"boolean"
+configDisplayView	
+description	"Structure containing minimal information regarding the view to be present to the UI."
+type	"object"
+title	"DisplayView"
+properties	
+comment	
+description	"Read-only. DNS view description."
+type	"string"
+name	
+description	"Read-only. DNS view name."
+type	"string"
+view	
+description	"The resource identifier."
+type	"string"
+configECSBlock	
+description	"Block for fields: ecs_enabled, ecs_forwarding, ecs_prefix_v4, ecs_prefix_v6, ecs_zones."
+type	"object"
+title	"ECSBlock"
+properties	
+ecs_enabled	
+description	"Optional. Field config for ecs_enabled field."
+type	"boolean"
+format	"boolean"
+ecs_forwarding	
+description	"Optional. Field config for ecs_forwarding field."
+type	"boolean"
+format	"boolean"
+ecs_prefix_v4	
+description	"Optional. Field config for ecs_prefix_v4 field."
+type	"integer"
+format	"int64"
+ecs_prefix_v6	
+description	"Optional. Field config for ecs_prefix_v6 field."
+type	"integer"
+format	"int64"
+ecs_zones	
+description	"Optional. Field config for ecs_zones field from."
+type	"array"
+items	
+$ref	"#/definitions/configECSZone"
+configECSZone	
+description	"EDNS Client Subnet zone."
+type	"object"
+title	"ECSZone"
+required	
+0	"fqdn"
+1	"access"
+properties	
+access	
+description	"Requried. Access control for zone.\n\nAllowed values:\n- allow\n- deny"
+type	"string"
+fqdn	
+description	"Required. Zone FQDN."
+type	"string"
+protocol_fqdn	
+description	"Read only. Zone FQDN in punycode."
+type	"string"
+configExternalPrimary	
+description	"External DNS primary."
+type	"object"
+title	"ExternalPrimary"
+required	
+0	"type"
+properties	
+address	
+description	"Optional. Required only if type is \"server\". IP Address of nameserver."
+type	"string"
+fqdn	
+description	"Optional. Required only if type is \"server\". FQDN of nameserver."
+type	"string"
+nsg	
+description	"The resource identifier."
+type	"string"
+protocol_fqdn	
+description	"Read only. TSIG key's DNS name (FQDN) in punycode."
+type	"string"
+protocol_tsig_key_name	
+description	"Read only. FQDN of nameserver in punycode."
+type	"string"
+tsig_enabled	
+description	"Optional. If enabled, secondaries will use the configured TSIG key when requesting a zone transfer from this primary."
+type	"boolean"
+format	"boolean"
+tsig_key_algo	
+description	"Optional. TSIG key algorithm.\n\nAllowed values:\n- hmac_md5\n- hmac_sha1\n- hmac_sha224\n- hmac_sha256\n- hmac_sha384\n- hmac_sha512\n\nDefaults to hmac_sha256."
+type	"string"
+tsig_key_data	
+description	"Optional. TSIG key data.\n\nError if empty while tsig_enabled is true."
+type	"string"
+tsig_key_name	
+description	"Optional. TSIG key's DNS name (FQDN).\n\nError if empty while tsig_enabled is true."
+type	"string"
+type	
+type	"string"
+title	"Allowed values:\n- nsg\n- server"
+configForwardNSG	
+description	"Nameserver group for forward zones."
+type	"object"
+title	"ForwardNSG"
+required	
+0	"name"
+properties	
+comment	
+description	"Optional. Comment for NSG object."
+type	"string"
+external_forwarders	
+description	"Optional. External DNS servers to forward to. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forwarders_only	
+description	"Optional. True to only forward."
+type	"boolean"
+format	"boolean"
+hosts	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+internal_forwarders	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+name	
+description	"Required. Name of NSG object."
+type	"string"
+nsgs	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+configForwardZone	
+description	"Forward zone"
+type	"object"
+title	"ForwardZone"
+required	
+0	"fqdn"
+properties	
+comment	
+description	"Optional. Comment for zone configuration."
+type	"string"
+disabled	
+description	"Optional. True to disable object. A disabled object is effectively non-existent when generating configuration."
+type	"boolean"
+format	"boolean"
+external_forwarders	
+description	"Optional. External DNS servers to forward to. Order is not significant."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forward_only	
+description	"Optional. True to only forward."
+type	"boolean"
+format	"boolean"
+fqdn	
+description	"Required. Zone FQDN.\nThe FQDN supplied at creation will be converted to canonical form.\n\nRead-only after creation."
+type	"string"
+hosts	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+internal_forwarders	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+mapped_subnet	
+description	"Read-only. Reverse zone network address in the following format: <ip-address>/<cidr>.\nDefaults to empty."
+type	"string"
+mapping	
+description	"Read-only. Zone mapping type.\nAllowed values:\n- forward\n- ipv4_reverse\nDefaults to forward."
+type	"string"
+nsgs	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+parent	
+description	"The resource identifier."
+type	"string"
+protocol_fqdn	
+description	"Read only. Zone FQDN in punycode."
+type	"string"
+tags	
+$ref	"#/definitions/typesJSONValue"
+view	
+description	"The resource identifier."
+type	"string"
+configForwarder	
+description	"External DNS server to forward to."
+type	"object"
+title	"Forwarder"
+required	
+0	"fqdn"
+1	"address"
+properties	
+address	
+description	"Required. Server IP address."
+type	"string"
+fqdn	
+description	"Required. Server FQDN."
+type	"string"
+protocol_fqdn	
+description	"Read only. Server FQDN in punycode."
+type	"string"
+configForwardersBlock	
+description	"Block for fields: forwarders, forwarders_only."
+type	"object"
+title	"ForwardersBlock"
+properties	
+forwarders	
+description	"Optional. Field config for forwarders field from."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forwarders_only	
+description	"Optional. Field config for forwarders_only field."
+type	"boolean"
+format	"boolean"
+configGlobal	
+description	"Global DNS settings. Used by default until overridden. There is only one instance of this object per account. It is auto-created."
+type	"object"
+title	"Global"
+properties	
+custom_root_ns	
+description	"Optional. List of custom root nameservers. The order does not matter.\n\nError if empty while custom_root_ns_enabled is true.\nError if there are duplicate items in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configRootNS"
+custom_root_ns_enabled	
+description	"Optional. True to use custom root nameservers instead of the default ones.\n\nThe custom_root_ns is validated when enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+dnssec_enable_validation	
+description	"Optional. True to perform DNSSEC validation.\nIgnored if dnssec_enabled is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_enabled	
+description	"Optional. Master toggle for all DNSSEC processing.\nOther dnssec_* configuration is unused if this is disabled.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_root_keys	
+description	"Read-only. DNSSEC root keys. The root keys are not configurable.\n\nA default list is provided by cloud management and included here for config generation."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_trust_anchors	
+description	"Optional. DNSSEC trust anchors.\n\nError if there are list items with duplicate (zone, sep, algorithm) combinations.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_validate_expiry	
+description	"Optional. True to reject expired DNSSEC keys.\nIgnored if either dnssec_enabled or dnssec_enable_validation is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+ecs_enabled	
+description	"Optional. True to enable EDNS client subnet for recursive queries.\nOther ecs_* fields are ignored if this field is not enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_forwarding	
+description	"Optional. True to enable ECS options in outbound queries. This functionality has additional overhead so it is disabled by default.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_prefix_v4	
+description	"Optional. Maximum scope length for v4 ECS.\n\nUnsigned integer, min 1 max 24.\n\nDefaults to 24."
+type	"integer"
+format	"int64"
+ecs_prefix_v6	
+description	"Optional. Maximum scope length for v6 ECS.\n\nUnsigned integer, min 1 max 56.\n\nDefaults to 56."
+type	"integer"
+format	"int64"
+ecs_zones	
+description	"Optional. List of zones where ECS queries may be sent.\n\nError if empty while ecs_enabled is true.\nError if there are duplicate FQDNs in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configECSZone"
+forwarders	
+description	"Optional. List of forwarders.\n\nError if empty while forwarders_only is true.\nError if there are items in the list with duplicate addresses.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forwarders_only	
+description	"Optional. True to only forward.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+lame_ttl	
+description	"Optional. Seconds to cache lame server indications. Setting this to zero disables caching, which is not recommended.\n\nUnsigned integer, min 0 max 3600 (1h).\n\nDefaults to 600."
+type	"integer"
+format	"int64"
+log_query_response	
+description	"Optional. Control DNS query/response logging functionality. Defaults to true."
+type	"boolean"
+format	"boolean"
+match_recursive_only	
+description	"Optional. If true only recursive queries from matching clients access the view.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+max_cache_ttl	
+description	"Optional. Seconds to cache positive responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 604800 (7d)."
+type	"integer"
+format	"int64"
+max_negative_ttl	
+description	"Optional. Seconds to cache negative responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 10800 (3h)."
+type	"integer"
+format	"int64"
+minimal_responses	
+description	"Optional. When enabled, the DNS server will only add records to the authority and additional data sections when they are required.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+query_acl	
+description	"Optional. Clients must match this ACL to make authoritative queries.\nAlso used for recursive queries if that ACL is unset.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+query_port	
+description	"Optional. Source port for outbound DNS queries.\nWhen set to zero the port is unspecified and the implementation may randomize it using any available ports.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+recursion_acl	
+description	"Optional. Clients must match this ACL to make recursive  queries. If this ACL is empty, then the query_acl will be used instead.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+recursion_enabled	
+description	"Optional. True to allow recursive DNS queries.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+recursive_clients	
+description	"Optional. Defines the number of simultaneous recursive lookups the server will perform on behalf of its clients.\n\nDefaults to 1000"
+type	"integer"
+format	"int64"
+resolver_query_timeout	
+description	"Optional. Seconds before a recursive query times out.\n\nUnsigned integer, min 1 max 30.\n\nDefaults to 30."
+type	"integer"
+format	"int64"
+secondary_axfr_query_limit	
+description	"Optional. Maximum concurrent inbound AXFRs.\nWhen set to zero a host-dependent default will be used.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+secondary_soa_query_limit	
+description	"Optional. Maximum concurrent outbound SOA queries.\nWhen set to zero a host-dependent default will be used.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+transfer_acl	
+description	"Optional. Clients must match this ACL to receive zone transfers.\n\nDefaults to \"deny any\"."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+update_acl	
+description	"Optional. Specifies which hosts are allowed to issue Dynamic DNS updates for auth zones of primary_type \"cloud\".\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+use_forwarders_for_subzones	
+description	"Optional. Use default forwarders to resolve queries for subzones.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+zone_authority	
+description	"Optional. ZoneAuthority."
+$ref	"#/definitions/configZoneAuthority"
+configHost	
+description	"Associates DNS configuration with hosts. \n\nAutomatically created and destroyed based on the hosts known to the platform."
+type	"object"
+title	"Host"
+required	
+0	"ophid"
+properties	
+absolute_name	
+description	"Read-write. Host FQDN."
+type	"string"
+address	
+description	"Read-only. Host's primary IP Address."
+type	"string"
+anycast_addresses	
+description	"Read-only. Anycast address configured to the host. Order is not significant."
+type	"array"
+items	
+type	"string"
+associated_server	
+description	"Host associated server configuration."
+$ref	"#/definitions/configHostAssociatedServer"
+comment	
+description	"Read-only. Host description."
+type	"string"
+dfp	
+description	"Read-only. True if BloxOne DDI DNS and DFP are both active on the host. If so, BloxOne DDI DNS will augment recursive queries and forward them to DFP."
+type	"boolean"
+format	"boolean"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+name	
+description	"Read-only. Host display name."
+type	"string"
+ophid	
+description	"Read-only. On-Prem Host ID."
+type	"string"
+protocol_absolute_name	
+description	"Read-only. Host FQDN in punycode."
+type	"string"
+server	
+description	"The resource identifier."
+type	"string"
+site_id	
+type	"string"
+title	"Read-only. Host site ID"
+tags	
+description	"Read-only. Host tagging specifics."
+$ref	"#/definitions/typesJSONValue"
+configHostAssociatedServer	
+type	"object"
+properties	
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+name	
+description	"Read-only. DNS server name."
+type	"string"
+configInheritedACLItems	
+description	"Inheritance configuration for a field of type list of [ACLItem]."
+type	"object"
+title	"InheritedACLItems"
+properties	
+action	
+description	"Optional. Inheritance setting for a field.\nDefaults to 'inherit'."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+configInheritedCustomRootNSBlock	
+description	"Inheritance block for fields: custom_root_ns_enabled, custom_root_ns."
+type	"object"
+title	"InheritedCustomRootNSBlock"
+properties	
+action	
+description	"Defaults to 'inherit'."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+$ref	"#/definitions/configCustomRootNSBlock"
+configInheritedDNSSECValidationBlock	
+description	"Inheritance block for fields: dnssec_enabled, dnssec_enable_validation, dnssec_validate_expiry, dnssec_trust_anchors."
+type	"object"
+title	"InheritedDNSSECValidationBlock"
+properties	
+action	
+description	"Defaults to 'inherit'."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+$ref	"#/definitions/configDNSSECValidationBlock"
+configInheritedECSBlock	
+description	"Inheritance block for fields: ecs_enabled, ecs_forwarding, ecs_prefix_v4, ecs_prefix_v6, ecs_zones."
+type	"object"
+title	"InheritedECSBlock"
+properties	
+action	
+description	"Defaults to 'inherit'."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+$ref	"#/definitions/configECSBlock"
+configInheritedForwardersBlock	
+description	"Inheritance block for fields: forwarders, forwarders_only."
+type	"object"
+title	"InheritedForwardersBlock"
+properties	
+action	
+description	"Defaults to 'inherit'."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+$ref	"#/definitions/configForwardersBlock"
+configInheritedZoneAuthority	
+description	"Inheritance configuration for a field of type [ZoneAuthority]."
+type	"object"
+title	"InheritedZoneAuthority"
+properties	
+default_ttl	
+description	"Optional. Field config for default_ttl field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+expire	
+description	"Optional. Field config for expire field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+negative_ttl	
+description	"Optional. Field config for negative_ttl field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+protocol_rname	
+description	"Optional. Field config for protocol_rname field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedString"
+refresh	
+description	"Optional. Field config for refresh field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+retry	
+description	"Optional. Field config for retry field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+rname	
+description	"Optional. Field config for rname field from [ZoneAuthority] object."
+$ref	"#/definitions/inheritance2InheritedString"
+configInternalSecondary	
+description	"BloxOne DDI host acting as DNS secondary."
+type	"object"
+title	"InternalSecondary"
+required	
+0	"host"
+properties	
+host	
+description	"The resource identifier."
+type	"string"
+configListACLResponse	
+description	"The ACL object list response format."
+type	"object"
+title	"ListACLResponse"
+properties	
+results	
+description	"List of ACL objects."
+type	"array"
+items	
+$ref	"#/definitions/configACL"
+configListAuthNSGResponse	
+description	"The Auth NSG object list response format."
+type	"object"
+title	"ListAuthNSGResponse"
+properties	
+results	
+description	"List of Auth NSG objects."
+type	"array"
+items	
+$ref	"#/definitions/configAuthNSG"
+configListAuthZoneResponse	
+description	"The Auth Zone object list response format."
+type	"object"
+title	"ListAuthZoneResponse"
+properties	
+results	
+description	"The list of Auth Zone objects."
+type	"array"
+items	
+$ref	"#/definitions/configAuthZone"
+configListForwardNSGResponse	
+description	"The Forward NSG object list response format."
+type	"object"
+title	"ListForwardNSGResponse"
+properties	
+results	
+description	"List of Forward NSG objects."
+type	"array"
+items	
+$ref	"#/definitions/configForwardNSG"
+configListForwardZoneResponse	
+description	"The Forward Zone objects list response format."
+type	"object"
+title	"ListForwardZoneResponse"
+properties	
+results	
+description	"List of Forward Zone objects."
+type	"array"
+items	
+$ref	"#/definitions/configForwardZone"
+configListHostResponse	
+description	"The DNS Host object list response format."
+type	"object"
+title	"ListHostResponse"
+properties	
+results	
+description	"List of DNS Host objects."
+type	"array"
+items	
+$ref	"#/definitions/configHost"
+configListServerResponse	
+description	"The Server object list response format."
+type	"object"
+title	"ListServerResponse"
+properties	
+results	
+description	"List of Server objects."
+type	"array"
+items	
+$ref	"#/definitions/configServer"
+configListViewResponse	
+description	"The View object list response format."
+type	"object"
+title	"ListViewResponse"
+properties	
+results	
+description	"List of View objects."
+type	"array"
+items	
+$ref	"#/definitions/configView"
+configReadACLResponse	
+description	"The ACL object read response format."
+type	"object"
+title	"ReadACLResponse"
+properties	
+result	
+description	"The ACL object."
+$ref	"#/definitions/configACL"
+configReadAuthNSGResponse	
+description	"The Auth NSG object read response format."
+type	"object"
+title	"ReadAuthNSGResponse"
+properties	
+result	
+description	"The Auth NSG object."
+$ref	"#/definitions/configAuthNSG"
+configReadAuthZoneResponse	
+description	"The Auth Zone object read response format."
+type	"object"
+title	"ReadAuthZoneResponse"
+properties	
+result	
+description	"The AuthZone object."
+$ref	"#/definitions/configAuthZone"
+configReadForwardNSGResponse	
+description	"The Forward NSG object read response format."
+type	"object"
+title	"ReadForwardNSGResponse"
+properties	
+result	
+description	"The Forward NSG object."
+$ref	"#/definitions/configForwardNSG"
+configReadForwardZoneResponse	
+description	"The Forward Zone object read response format."
+type	"object"
+title	"ReadForwardZoneResponse"
+properties	
+result	
+description	"The Forward Zone object."
+$ref	"#/definitions/configForwardZone"
+configReadGlobalResponse	
+description	"The Global object read response format."
+type	"object"
+title	"ReadGlobalResponse"
+properties	
+result	
+description	"The global object."
+$ref	"#/definitions/configGlobal"
+configReadHostResponse	
+description	"The DNS Host object read response format."
+type	"object"
+title	"ReadHostResponse"
+properties	
+result	
+description	"The DNS Host object."
+$ref	"#/definitions/configHost"
+configReadServerResponse	
+description	"The Server object read response format."
+type	"object"
+title	"ReadServerResponse"
+properties	
+result	
+description	"The Server object."
+$ref	"#/definitions/configServer"
+configReadViewResponse	
+description	"The View object read response format."
+type	"object"
+title	"ReadViewResponse"
+properties	
+result	
+description	"The View object."
+$ref	"#/definitions/configView"
+configRootNS	
+description	"Root nameserver"
+type	"object"
+title	"RootNS"
+required	
+0	"fqdn"
+1	"address"
+properties	
+address	
+description	"Required. IPv4 address."
+type	"string"
+fqdn	
+description	"Required. FQDN."
+type	"string"
+protocol_fqdn	
+description	"Read only. FQDN in punycode."
+type	"string"
+configServer	
+description	"A Server (dns/server) configuration. Named collection of DNS configuration settings."
+type	"object"
+title	"Server"
+required	
+0	"name"
+properties	
+auto_sort_views	
+description	"Optional. Controls manual/automatic views ordering.\nDefaults to true."
+type	"boolean"
+format	"boolean"
+comment	
+description	"Optional. Comment for server configuration."
+type	"string"
+custom_root_ns	
+description	"Optional. List of custom root nameservers. The order does not matter.\n\nError if empty while custom_root_ns_enabled is true.\nError if there are duplicate items in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configRootNS"
+custom_root_ns_enabled	
+description	"Optional. True to use custom root nameservers instead of the default ones.\n\nThe custom_root_ns is validated when enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+dnssec_enable_validation	
+description	"Optional. True to perform DNSSEC validation.\nIgnored if dnssec_enabled is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_enabled	
+description	"Optional. Master toggle for all DNSSEC processing.\nOther dnssec_* configuration is unused if this is disabled.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_root_keys	
+description	"Read-only. DNSSEC root keys. The root keys are not configurable.\n\nA default list is provided by cloud management and included here for config generation."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_trust_anchors	
+description	"Optional. DNSSEC trust anchors.\n\nError if there are list items with duplicate (zone, sep, algorithm) combinations.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_validate_expiry	
+description	"Optional. True to reject expired DNSSEC keys.\nIgnored if either dnssec_enabled or dnssec_enable_validation is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+ecs_enabled	
+description	"Optional. True to enable EDNS client subnet for recursive queries.\nOther ecs_* fields are ignored if this field is not enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_forwarding	
+description	"Optional. True to enable ECS options in outbound queries. This functionality has additional overhead so it is disabled by default.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_prefix_v4	
+description	"Optional. Maximum scope length for v4 ECS.\n\nUnsigned integer, min 1 max 24\n\nDefaults to 24."
+type	"integer"
+format	"int64"
+ecs_prefix_v6	
+description	"Optional. Maximum scope length for v6 ECS.\n\nUnsigned integer, min 1 max 56\n\nDefaults to 56."
+type	"integer"
+format	"int64"
+ecs_zones	
+description	"Optional. List of zones where ECS queries may be sent.\n\nError if empty while ecs_enabled is true.\nError if there are duplicate FQDNs in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configECSZone"
+forwarders	
+description	"Optional. List of forwarders.\n\nError if empty while forwarders_only is true.\nError if there are items in the list with duplicate addresses.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forwarders_only	
+description	"Optional. True to only forward.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+inheritance_sources	
+description	"Optional. Inheritance configuration."
+$ref	"#/definitions/configServerInheritance"
+lame_ttl	
+description	"Optional. Seconds to cache lame server indications. Setting this to zero disables caching, which is not recommended.\n\nUnsigned integer, min 0 max 3600 (1h).\n\nDefaults to 600."
+type	"integer"
+format	"int64"
+log_query_response	
+description	"Optional. Control DNS query/response logging functionality. Defaults to true."
+type	"boolean"
+format	"boolean"
+match_recursive_only	
+description	"Optional. If true only recursive queries from matching clients access the view.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+max_cache_ttl	
+description	"Optional. Seconds to cache positive responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 604800 (7d)."
+type	"integer"
+format	"int64"
+max_negative_ttl	
+description	"Optional. Seconds to cache negative responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 10800 (3h)."
+type	"integer"
+format	"int64"
+minimal_responses	
+description	"Optional. When enabled, the DNS server will only add records to the authority and additional data sections when they are required.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+name	
+description	"Required. Name of configuration."
+type	"string"
+query_acl	
+description	"Optional. Clients must match this ACL to make authoritative queries.\nAlso used for recursive queries if that ACL is unset.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+query_port	
+description	"Optional. Source port for outbound DNS queries.\nWhen set to zero the port is unspecified and the implementation may randomize it using any available ports.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+recursion_acl	
+description	"Optional. Clients must match this ACL to make recursive  queries. If this ACL is empty, then the query_acl will be used instead.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+recursion_enabled	
+description	"Optional. True to allow recursive DNS queries.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+recursive_clients	
+description	"Optional. Defines the number of simultaneous recursive lookups the server will perform on behalf of its clients.\n\nDefaults to 1000"
+type	"integer"
+format	"int64"
+resolver_query_timeout	
+description	"Optional. Seconds before a recursive query times out.\n\nUnsigned integer, min 1 max 30.\n\nDefaults to 30."
+type	"integer"
+format	"int64"
+secondary_axfr_query_limit	
+description	"Optional. Maximum concurrent inbound AXFRs.\nWhen set to zero a host-dependent default will be used.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+secondary_soa_query_limit	
+description	"Optional. Maximum concurrent outbound SOA queries.\nWhen set to zero a host-dependent default will be used.\n\nDefaults to 0."
+type	"integer"
+format	"int64"
+tags	
+$ref	"#/definitions/typesJSONValue"
+transfer_acl	
+description	"Optional. Clients must match this ACL to receive zone transfers.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+update_acl	
+description	"Optional. Specifies which hosts are allowed to issue Dynamic DNS updates for auth zones of primary_type \"cloud\".\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+use_forwarders_for_subzones	
+description	"Optional. Use default forwarders to resolve queries for subzones.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+views	
+description	"Optional. Ordered list of dns/display_view objects served by any of dns/hosts assigned to a particular DNS Configuration Profile.\nAutomatically determined by backed. Allows re-ordering only."
+type	"array"
+items	
+$ref	"#/definitions/configDisplayView"
+configServerInheritance	
+description	"Inheritance configuration specifies how and which fields [Server] object inherits from [Global] parent."
+type	"object"
+title	"ServerInheritance"
+properties	
+custom_root_ns_block	
+description	"Optional. Field config for custom_root_ns_block field from [Server] object."
+$ref	"#/definitions/configInheritedCustomRootNSBlock"
+dnssec_validation_block	
+description	"Optional. Field config for dnssec_validation_block field from [Server] object."
+$ref	"#/definitions/configInheritedDNSSECValidationBlock"
+ecs_block	
+description	"Optional. Field config for ecs_block field from [Server] object."
+$ref	"#/definitions/configInheritedECSBlock"
+forwarders_block	
+description	"Optional. Field config for forwarders_block field from [Server] object."
+$ref	"#/definitions/configInheritedForwardersBlock"
+lame_ttl	
+description	"Optional. Field config for lame_ttl field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+log_query_response	
+description	"Optional. Field config for log_queries_response field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+match_recursive_only	
+description	"Optional. Field config for match_recursive_only field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+max_cache_ttl	
+description	"Optional. Field config for max_cache_ttl field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+max_negative_ttl	
+description	"Optional. Field config for max_negative_ttl field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+minimal_responses	
+description	"Optional. Field config for minimal_responses field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+query_acl	
+description	"Optional. Field config for query_acl field from [Server] object."
+$ref	"#/definitions/configInheritedACLItems"
+query_port	
+description	"Optional. Field config for query_port field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+recursion_acl	
+description	"Optional. Field config for recursion_acl field from [Server] object."
+$ref	"#/definitions/configInheritedACLItems"
+recursion_enabled	
+description	"Optional. Field config for recursion_enabled field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+recursive_clients	
+description	"Optional. Field config for recursive_clients field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+resolver_query_timeout	
+description	"Optional. Field config for resolver_query_timeout field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+secondary_axfr_query_limit	
+description	"Optional. Field config for secondary_axfr_query_limit field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+secondary_soa_query_limit	
+description	"Optional. Field config for secondary_soa_query_limit field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+transfer_acl	
+description	"Optional. Field config for transfer_acl field from [Server] object."
+$ref	"#/definitions/configInheritedACLItems"
+update_acl	
+description	"Optional. Field config for update_acl field from [Server] object."
+$ref	"#/definitions/configInheritedACLItems"
+use_forwarders_for_subzones	
+description	"Optional. Field config for use_forwarders_for_subzones field from [Server] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+configTrustAnchor	
+description	"DNSSEC trust anchor."
+type	"object"
+title	"TrustAnchor"
+required	
+0	"zone"
+1	"algorithm"
+2	"public_key"
+properties	
+algorithm	
+type	"integer"
+format	"int64"
+title	"Required. Key algorithm.\nAlgorithm values are as per standards.\nThe mapping is as follows:\n   RSAMD5 = 1\n   DH = 2\n   DSA = 3\n   RSASHA1 = 5\n   DSANSEC3SHA1 = 6\n   RSASHA1NSEC3SHA1 = 7\n   RSASHA256 = 8\n   RSASHA512 = 10\n   ECDSAP256SHA256 = 13\n   ECDSAP384SHA384 = 14"
+protocol_zone	
+description	"Read only. Zone FQDN in punycode."
+type	"string"
+public_key	
+description	"Required. DNSSEC key data. Non-empty, valid base64 string."
+type	"string"
+sep	
+description	"Optional. Secure Entry Point flag.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+zone	
+description	"Required. Zone FQDN."
+type	"string"
+configUpdateACLResponse	
+description	"The ACL object update response format."
+type	"object"
+title	"UpdateACLResponse"
+properties	
+result	
+description	"The updated ACL object."
+$ref	"#/definitions/configACL"
+configUpdateAuthNSGResponse	
+description	"The Auth NSG object update response format."
+type	"object"
+title	"UpdateAuthNSGResponse"
+properties	
+result	
+description	"The updated Auth NSG object."
+$ref	"#/definitions/configAuthNSG"
+configUpdateAuthZoneResponse	
+description	"The Auth Zone object update response format."
+type	"object"
+title	"UpdateAuthZoneResponse"
+properties	
+result	
+description	"The updated AuthZone object."
+$ref	"#/definitions/configAuthZone"
+configUpdateForwardNSGResponse	
+description	"The Forward NSG object update response format."
+type	"object"
+title	"UpdateForwardNSGResponse"
+properties	
+result	
+description	"The updated Forward NSG object."
+$ref	"#/definitions/configForwardNSG"
+configUpdateForwardZoneResponse	
+description	"The Forward Zone object update response format."
+type	"object"
+title	"UpdateForwardZoneResponse"
+properties	
+result	
+description	"The updated Forward Zone object."
+$ref	"#/definitions/configForwardZone"
+configUpdateGlobalResponse	
+description	"The Global object update response format."
+type	"object"
+title	"UpdateGlobalResponse"
+properties	
+result	
+description	"The global object."
+$ref	"#/definitions/configGlobal"
+configUpdateHostResponse	
+description	"The DNS Host object update response format."
+type	"object"
+title	"UpdateHostResponse"
+properties	
+result	
+description	"The updated DNS Host object."
+$ref	"#/definitions/configHost"
+configUpdateServerResponse	
+description	"The Server object update response format."
+type	"object"
+title	"UpdateServerResponse"
+properties	
+result	
+description	"The Server object."
+$ref	"#/definitions/configServer"
+configUpdateViewResponse	
+description	"The View object update response format."
+type	"object"
+title	"UpdateViewResponse"
+properties	
+result	
+description	"The View object."
+$ref	"#/definitions/configView"
+configView	
+description	"Named collection of DNS View settings."
+type	"object"
+title	"View"
+required	
+0	"name"
+properties	
+comment	
+description	"Optional. Comment for view."
+type	"string"
+custom_root_ns	
+description	"Optional. List of custom root nameservers. The order does not matter.\n\nError if empty while custom_root_ns_enabled is true.\nError if there are duplicate items in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configRootNS"
+custom_root_ns_enabled	
+description	"Optional. True to use custom root nameservers instead of the default ones.\n\nThe custom_root_ns is validated when enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+disabled	
+description	"Optional. True to disable object. A disabled object is effectively non-existent when generating configuration."
+type	"boolean"
+format	"boolean"
+dnssec_enable_validation	
+description	"Optional. True to perform DNSSEC validation.\nIgnored if dnssec_enabled is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_enabled	
+description	"Optional. Master toggle for all DNSSEC processing.\nOther dnssec_* configuration is unused if this is disabled.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+dnssec_root_keys	
+description	"Read-only. DNSSEC root keys. The root keys are not configurable.\n\nA default list is provided by cloud management and included here for config generation."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_trust_anchors	
+description	"Optional. DNSSEC trust anchors.\n\nError if there are list items with duplicate (zone, sep, algorithm) combinations.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configTrustAnchor"
+dnssec_validate_expiry	
+description	"Optional. True to reject expired DNSSEC keys.\nIgnored if either dnssec_enabled or dnssec_enable_validation is false.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+ecs_enabled	
+description	"Optional. True to enable EDNS client subnet for recursive queries.\nOther ecs_* fields are ignored if this field is not enabled.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_forwarding	
+description	"Optional. True to enable ECS options in outbound queries. This functionality has additional overhead so it is disabled by default.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+ecs_prefix_v4	
+description	"Optional. Maximum scope length for v4 ECS.\n\nUnsigned integer, min 1 max 24\n\nDefaults to 24."
+type	"integer"
+format	"int64"
+ecs_prefix_v6	
+description	"Optional. Maximum scope length for v6 ECS.\n\nUnsigned integer, min 1 max 56\n\nDefaults to 56."
+type	"integer"
+format	"int64"
+ecs_zones	
+description	"Optional. List of zones where ECS queries may be sent.\n\nError if empty while ecs_enabled is true.\nError if there are duplicate FQDNs in the list.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configECSZone"
+forwarders	
+description	"Optional. List of forwarders.\n\nError if empty while forwarders_only is true.\nError if there are items in the list with duplicate addresses.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configForwarder"
+forwarders_only	
+description	"Optional. True to only forward.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+inheritance_sources	
+description	"Optional. Inheritance configuration."
+$ref	"#/definitions/configViewInheritance"
+ip_spaces	
+description	"The resource identifier."
+type	"array"
+items	
+type	"string"
+lame_ttl	
+description	"Optional. Seconds to cache lame server indications. Setting this to zero disables caching, which is not recommended.\n\nUnsigned integer, min 0 max 3600 (1h).\n\nDefaults to 600."
+type	"integer"
+format	"int64"
+match_clients_acl	
+description	"Optional. Specifies which clients have access to the view.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+match_destinations_acl	
+description	"Optional. Specifies which destination addresses have access to the view.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+match_recursive_only	
+description	"Optional. If true only recursive queries from matching clients access the view.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+max_cache_ttl	
+description	"Optional. Seconds to cache positive responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 604800 (7d)."
+type	"integer"
+format	"int64"
+max_negative_ttl	
+description	"Optional. Seconds to cache negative responses.\n\nUnsigned integer, min 1 max 604800 (7d).\n\nDefaults to 10800 (3h)."
+type	"integer"
+format	"int64"
+minimal_responses	
+description	"Optional. When enabled, the DNS server will only add records to the authority and additional data sections when they are required.\n\nDefaults to false."
+type	"boolean"
+format	"boolean"
+name	
+description	"Required. Name of view."
+type	"string"
+query_acl	
+description	"Optional. Clients must match this ACL to make authoritative queries.\nAlso used for recursive queries if that ACL is unset.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+recursion_acl	
+description	"Optional. Clients must match this ACL to make recursive  queries. If this ACL is empty, then the query_acl will be used instead.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+recursion_enabled	
+description	"Optional. True to allow recursive DNS queries.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+tags	
+description	"Tagging specifics."
+$ref	"#/definitions/typesJSONValue"
+transfer_acl	
+description	"Optional. Clients must match this ACL to receive zone transfers.\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+update_acl	
+description	"Optional. Specifies which hosts are allowed to issue Dynamic DNS updates for auth zones of primary_type \"cloud\".\n\nDefaults to empty."
+type	"array"
+items	
+$ref	"#/definitions/configACLItem"
+use_forwarders_for_subzones	
+description	"Optional. Use default forwarders to resolve queries for subzones.\n\nDefaults to true."
+type	"boolean"
+format	"boolean"
+zone_authority	
+description	"Optional. ZoneAuthority."
+$ref	"#/definitions/configZoneAuthority"
+configViewInheritance	
+description	"Inheritance configuration specifies how and which fields [View] object inherits from [Global, Server] parent."
+type	"object"
+title	"ViewInheritance"
+properties	
+custom_root_ns_block	
+description	"Optional. Field config for custom_root_ns_block field from [Server] object."
+$ref	"#/definitions/configInheritedCustomRootNSBlock"
+dnssec_validation_block	
+description	"Optional. Field config for dnssec_validation_block field from [View] object."
+$ref	"#/definitions/configInheritedDNSSECValidationBlock"
+ecs_block	
+description	"Optional. Field config for ecs_block field from [View] object."
+$ref	"#/definitions/configInheritedECSBlock"
+forwarders_block	
+description	"Optional. Field config for forwarders_block field from [View] object."
+$ref	"#/definitions/configInheritedForwardersBlock"
+lame_ttl	
+description	"Optional. Field config for lame_ttl field from [View] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+match_recursive_only	
+description	"Optional. Field config for match_recursive_only field from [View] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+max_cache_ttl	
+description	"Optional. Field config for max_cache_ttl field from [View] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+max_negative_ttl	
+description	"Optional. Field config for max_negative_ttl field from [View] object."
+$ref	"#/definitions/inheritance2InheritedUInt32"
+minimal_responses	
+description	"Optional. Field config for minimal_responses field from [View] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+query_acl	
+description	"Optional. Field config for query_acl field from [View] object."
+$ref	"#/definitions/configInheritedACLItems"
+recursion_acl	
+description	"Optional. Field config for recursion_acl field from [View] object."
+$ref	"#/definitions/configInheritedACLItems"
+recursion_enabled	
+description	"Optional. Field config for recursion_enabled field from [View] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+transfer_acl	
+description	"Optional. Field config for transfer_acl field from [View] object."
+$ref	"#/definitions/configInheritedACLItems"
+update_acl	
+description	"Optional. Field config for update_acl field from [View] object."
+$ref	"#/definitions/configInheritedACLItems"
+use_forwarders_for_subzones	
+description	"Optional. Field config for use_forwarders_for_subzones field from [View] object."
+$ref	"#/definitions/inheritance2InheritedBool"
+zone_authority	
+description	"Optional. Field config for zone_authority field from [View] object."
+$ref	"#/definitions/configInheritedZoneAuthority"
+configZoneAuthority	
+description	"Construct for fields: refresh, retry, expire, default_ttl, negative_ttl, rname, protocol_rname."
+type	"object"
+title	"ZoneAuthority"
+properties	
+default_ttl	
+description	"Optional. ZoneAuthority default ttl for resource records in zone (value in seconds).\n\nDefaults to 28800."
+type	"integer"
+format	"int64"
+expire	
+description	"Optional. ZoneAuthority expire time in seconds.\n\nDefaults to 2419200."
+type	"integer"
+format	"int64"
+negative_ttl	
+description	"Optional. ZoneAuthority negative caching (minimum) ttl in seconds.\n\nDefaults to 900."
+type	"integer"
+format	"int64"
+protocol_rname	
+description	"Optional. A domain name which specifies the mailbox of the person responsible for this zone.\nRead-only\nDefaults to empty."
+type	"string"
+refresh	
+description	"Optional. ZoneAuthority refresh.\n\nDefaults to 10800."
+type	"integer"
+format	"int64"
+retry	
+description	"Optional. ZoneAuthority retry.\n\nDefaults to 3600."
+type	"integer"
+format	"int64"
+rname	
+description	"Optional. ZoneAuthority rname.\n\nDefaults to empty."
+type	"string"
+inheritance2AssignedHost	
+type	"object"
+title	"ddi/assigned_host represents Host assigned to an object"
+properties	
+display_name	
+type	"string"
+host	
+description	"The resource identifier."
+type	"string"
+ophid	
+type	"string"
+inheritance2InheritedBool	
+type	"object"
+properties	
+action	
+type	"string"
+display_name	
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+type	"boolean"
+format	"boolean"
+inheritance2InheritedString	
+type	"object"
+properties	
+action	
+type	"string"
+display_name	
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+type	"string"
+inheritance2InheritedUInt32	
+type	"object"
+properties	
+action	
+type	"string"
+display_name	
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+type	"integer"
+format	"int64"
+typesJSONValue	
+type	"object"
+properties	
+value	
+type	"string"
+securityDefinitions	
+ApiKeyAuth	
+type	"apiKey"
+name	"Authorization"
+in	"header"
+security	
+0	
+ApiKeyAuth	[]

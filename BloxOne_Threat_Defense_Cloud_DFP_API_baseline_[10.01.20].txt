@@ -1,0 +1,274 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"https"
+swagger	"2.0"
+info	
+description	"BloxOne Cloud is a SaaS offering designed to provide protection to devices on and off-premises, including roaming, remote, and branch offices. It provides visibility into infected and compromised devices, prevents DNS-based data exfiltration, and automatically stops device communications with command-and-control servers (C&Cs) and botnets, in addition to providing recursive DNS services in the cloud. You can access the services by deploying the BloxOne Endpoint agent or the DNS forwarding proxy.\n\nFor remote office deployments or in cases where installing an endpoint agent is not desirable or possible, you can use the DNS forwarding proxy. It is a software that runs on bare-metal, VM infrastructures, or Infoblox NIOS appliances; and it embeds the client IPs in DNS queries before forwarding them to BloxOne Cloud. The communications are encrypted and client visibility is maintained. The proxy also provides DNS resolution to local DNS zones when you configure local resolvers. Once you set up a DNS forwarding proxy, it becomes the main DNS server for your remote site. It will also cache responses to speed resolution of future queries.\n\nBy implementing the DNS forwarding proxy, you can rest assured that BloxOne Cloud effectively enforces DNS client-based security policies at your remote sites. On-premises devices that send DNS queries reveal their actual client IP addresses (instead of their NAT IP address), which allows BloxOne Cloud to apply the security policies applicable to the respective endpoints and identify infected clients.\n"
+title	"BloxOne Cloud DFP API"
+version	"v1"
+basePath	"/api/atcdfp/v1/"
+paths	
+/dfps	
+get	
+description	"Use this method to retrieve information on all DNS Forwarding Proxy objects for the account.\n\nFor remote office deployments or in cases where installing an endpoint agent is not desirable or possible, you can use the DNS forwarding proxy. It is a software that runs on bare-metal, VM infrastructures, or Infoblox NIOS appliances; and it embeds the client IPs in DNS queries before forwarding them to BloxOne Cloud. The communications are encrypted and client visibility is maintained. The proxy also provides DNS resolution to local DNS zones when you configure local resolvers. Once you set up a DNS forwarding proxy, it becomes the main DNS server for your remote site. It will also cache responses to speed resolution of future queries.\n"
+tags	
+0	"dfp"
+summary	"List DNS Forwarding Proxies."
+operationId	"dfpListDfp"
+parameters	
+0	
+type	"string"
+description	"A collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'.\n\nYou can filter by following fields:\n\n| Name                    | type   | Supported Op                |\n| ----------------------- | ------ | --------------------------- |\n| name                    | string | !=, ==, ~, !~, >, <, <=, >= |\n| site_id                 | string | !=, ==, ~, !~, >, <, <=, >= |\n| ophid                   | string | !=, ==, ~, !~, >, <, <=, >= |\n| policy_id               | int32  | !=, ==, >, <, <=, >=        |\n| default_security_policy | bool   | !=, ==                      |\n\nIn addition groupping operators are supported:\n\n| Op  | Description          |\n| --- | -------------------- |\n| and | Logical AND          |\n| or  | Logical OR           |\n| not | Logical NOT          |\n| ()  | Groupping Operators  |\n\nExample:\n```\n?_filter=\"((name=='dfp1')or(ophid~'oph'))and(default_security_policy!='true')\"\n```\n"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcdfpDfpListResponse"
+/dfps/{id}	
+get	
+description	"Use this method to retrieve information on the specified DNS Forwarding Proxy object.\n\nFor remote office deployments or in cases where installing an endpoint agent is not desirable or possible, you can use the DNS forwarding proxy. It is a software that runs on bare-metal, VM infrastructures, or Infoblox NIOS appliances; and it embeds the client IPs in DNS queries before forwarding them to BloxOne Cloud. The communications are encrypted and client visibility is maintained. The proxy also provides DNS resolution to local DNS zones when you configure local resolvers. Once you set up a DNS forwarding proxy, it becomes the main DNS server for your remote site. It will also cache responses to speed resolution of future queries.\n\nNote that DNS Forwarding Proxy cannot be created (all information regarding DFP is synchronized from hostapp service).\n"
+tags	
+0	"dfp"
+summary	"Read DNS Forwarding Proxy."
+operationId	"dfpReadDfp"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The DNS Forwarding Proxy object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/atcdfpDfpReadResponse"
+404	
+description	"\n- 'id' value must contain existing DFP identifier"
+schema	
+properties	
+error	{…}
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	{…}
+put	
+description	"Use this method to update resolvers for the specified DNS Forwarding Proxy.\n\nFor remote office deployments or in cases where installing an endpoint agent is not desirable or possible, you can use the DNS forwarding proxy. It is a software that runs on bare-metal, VM infrastructures, or Infoblox NIOS appliances; and it embeds the client IPs in DNS queries before forwarding them to BloxOne Cloud. The communications are encrypted and client visibility is maintained. The proxy also provides DNS resolution to local DNS zones when you configure local resolvers. Once you set up a DNS forwarding proxy, it becomes the main DNS server for your remote site. It will also cache responses to speed resolution of future queries. There is a possibility to set default resolver(s) depending on the license class. DNS forwarding proxy would fallback to the default resolvers when BloxOne Cloud is unreachable.\n"
+tags	
+0	"dfp"
+summary	"Update DNS Forwarding Proxy resolvers."
+operationId	"dfpCreateOrUpdateDfp"
+parameters	
+0	
+type	"integer"
+format	"int32"
+description	"The DNS Forwarding Proxy object identifier."
+name	"id"
+in	"path"
+required	true
+1	
+description	"The DNS Forwarding Proxy object."
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/atcdfpDfpCreateOrUpdatePayload"
+responses	
+201	
+description	"PUT operation response"
+schema	
+$ref	"#/definitions/atcdfpDfpCreateOrUpdateResponse"
+400	
+description	"\n- 'id' value must be greater than or equal to zero\n- 'resolvers' value must contain values that are valid IPv4 or IPv6 addresses\n- 'resolvers' value must contain unique elements\n- 'default_resolvers' value must contain values that are valid IPv4 or IPv6 addresses\n- 'default_resolvers' value must contain unique elements"
+schema	
+properties	
+error	{…}
+404	
+description	"\n- 'id' value must contain existing DFP identifier"
+schema	
+properties	
+error	{…}
+500	
+description	"\n- Internal server error occurred"
+schema	
+properties	
+error	{…}
+definitions	
+atcdfpDfp	
+type	"object"
+properties	
+created_time	
+description	"The time when this DNS Forwarding Proxy object was created."
+type	"string"
+format	"date-time"
+readOnly	true
+default_resolvers	
+description	"The list of default DNS resolvers that will be used in case if the BloxOne Cloud is unreachable."
+type	"array"
+items	
+type	"string"
+readOnly	true
+example	
+0	"4.4.4.4"
+1	"2001:cdba:9abc:5678:ffff:ffff:ffff:ffff"
+id	
+description	"The DNS Forwarding Proxy object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+internal_domain_lists	
+description	"The list of internal domains list IDs that are associated with this DFP"
+type	"array"
+items	
+type	"integer"
+format	"int32"
+name	
+description	"The name of the DNS Forwarding Proxy."
+type	"string"
+readOnly	true
+example	"dfp_a"
+net_addr_policy_ids	
+description	"List of network-address-scoped security policy assignments"
+type	"array"
+items	
+$ref	"#/definitions/atcdfpNetAddrPolicyAssignment"
+ophid	
+description	"The On-Prem Host identifier."
+type	"string"
+readOnly	true
+example	"aed8263b8900bfb178e0bb7c57ba5af8"
+policy_id	
+description	"The identifier of the security policy with which the DNS Forwarding Proxy is associated."
+type	"integer"
+format	"int32"
+readOnly	true
+example	52134
+range_addr_policy_ids	
+description	"List of address-range-scoped security policy assignments"
+type	"array"
+items	
+$ref	"#/definitions/atcdfpRangeAddrPolicyAssignment"
+resolvers	
+description	"The list of internal or local DNS servers' IPv4 or IPv6 addresses that are used as DNS resolvers."
+type	"array"
+items	
+type	"string"
+readOnly	true
+example	
+0	"1.1.1.1"
+1	"2001:cdba:9abc:5678:ffff:ffff:ffff:ffff"
+site_id	
+description	"The DNS Forwarding Proxy site identifier that is appended to DNS queries originating from this DNS Forwarding Proxy and subsequently used for policy lookup purposes."
+type	"string"
+readOnly	true
+example	"134997289555407a8527bea7957ea7a0"
+updated_time	
+description	"The time when this DNS Forwarding Proxy object was last updated."
+type	"string"
+format	"date-time"
+readOnly	true
+atcdfpDfpCreateOrUpdatePayload	
+description	"DNS Forwarding Proxy object.\n\nFor remote office deployments or in cases where installing an endpoint agent is not desirable or possible, you can use the DNS forwarding proxy. It is a software that runs on bare-metal, VM infrastructures, or Infoblox NIOS appliances; and it embeds the client IPs in DNS queries before forwarding them to BloxOne Cloud. The communications are encrypted and client visibility is maintained. The proxy also provides DNS resolution to local DNS zones when you configure local resolvers. Once you set up a DNS forwarding proxy, it becomes the main DNS server for your remote site. It will also cache responses to speed resolution of future queries.\n\nNote that DNS Forwarding Proxy cannot be created (all information regarding DFP is synchronized from hostapp service)."
+type	"object"
+properties	
+default_resolvers	
+description	"The list of default DNS resolvers that will be used in case if the BloxOne Cloud is unreachable."
+type	"array"
+items	
+type	"string"
+example	
+0	"4.4.4.4"
+1	"2001:cdba:9abc:5678:ffff:ffff:ffff:ffff"
+id	
+description	"The DNS Forwarding Proxy object identifier."
+type	"integer"
+format	"int32"
+readOnly	true
+internal_domain_lists	
+description	"The list of internal domain list ids associated with this DFP (or resolvers)"
+type	"array"
+items	
+type	"integer"
+format	"int32"
+name	
+description	"The name of the DNS Forwarding Proxy."
+type	"string"
+example	"dfp_a"
+resolvers	
+description	"The list of internal or local DNS servers' IPv4 or IPv6 addresses that are used as DNS resolvers."
+type	"array"
+items	
+type	"string"
+example	
+0	"1.1.1.1"
+1	"2001:cdba:9abc:5678:ffff:ffff:ffff:ffff"
+site_id	
+description	"The DNS Forwarding Proxy site identifier that is appended to DNS queries originating from this DNS Forwarding Proxy and subsequently used for policy lookup purposes."
+type	"string"
+example	"134997289555407a8527bea7957ea7a0"
+atcdfpDfpCreateOrUpdateResponse	
+description	"The DNS Forwarding Proxy update response."
+type	"object"
+properties	
+results	
+description	"The DNS Forwarding Proxy object."
+$ref	"#/definitions/atcdfpDfp"
+atcdfpDfpListResponse	
+description	"The DNS Forwarding Proxy list response."
+type	"object"
+properties	
+results	
+description	"The list of DNS Forwarding Proxy objects."
+type	"array"
+items	
+$ref	"#/definitions/atcdfpDfp"
+atcdfpDfpReadResponse	
+description	"The DNS Forwarding Proxy read response."
+type	"object"
+properties	
+results	
+description	"The DNS Forwarding Proxy object."
+$ref	"#/definitions/atcdfpDfp"
+atcdfpNetAddrPolicyAssignment	
+description	"network address with the assigned policy"
+type	"object"
+properties	
+addr_net	
+description	"network address in IPv4 CIDR (address/bitmask length) string format"
+type	"string"
+policy_id	
+description	"Identifier of the security policy associated with this address block"
+type	"integer"
+format	"int32"
+atcdfpRangeAddrPolicyAssignment	
+description	"start/stop (inclusively) address range with the assigned policy"
+type	"object"
+properties	
+addr_end	
+description	"end of the range: IP address as IPv4 string"
+type	"string"
+addr_start	
+description	"start of the range: IP address as IPv4 string"
+type	"string"
+policy_id	
+description	"Identifier of the security policy associated with this address range"
+type	"integer"
+format	"int32"

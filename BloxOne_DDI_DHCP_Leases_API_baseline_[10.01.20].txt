@@ -1,0 +1,706 @@
+	
+consumes	
+0	"application/json"
+produces	
+0	"application/json"
+schemes	
+0	"http"
+1	"https"
+swagger	"2.0"
+info	
+description	"The DHCP Leases application is a BloxOne DDI service that stores information about leases. Please note that hosts are authoritative for their lease data. Changes to leases are periodically replicated to the cloud and stored by this service for display purposes. There is no lease history, so only current leases are available. In other words, every dhcp/host_lease or dhcp/lease for that matter, represents a lease that is currently active. Note that fixed addresses do not have leases.\n\n"
+title	"DHCP Leases API"
+version	"v1"
+basePath	"/api/ddi/v1/"
+paths	
+/dhcp/fingerprint	
+get	
+description	"Use this method to list all Fingerprint objects.\nA fingerprint specifies a name and a set of rules."
+tags	
+0	"fingerprint"
+summary	"List Fingerprint objects."
+operationId	"fingerprintList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+2	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+4	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+5	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+6	
+type	"string"
+description	"This parameter is used for sorting by tags."
+name	"_torder_by"
+in	"query"
+7	
+type	"string"
+description	"This parameter is used for filtering by tags."
+name	"_tfilter"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesListFingerprintResponse"
+post	
+description	"Use this method to create a Fingerprint object.\nA fingerprint specifies a name and a set of rules."
+tags	
+0	"fingerprint"
+summary	"Create Fingerprint object."
+operationId	"fingerprintCreate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"data.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"data.id.resource_type"
+in	"path"
+required	true
+2	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/leasesFingerprint"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/leasesCreateFingerprintResponse"
+/dhcp/fingerprint/{id}	
+get	
+description	"Use this method to read a Fingerprint object.\nA fingerprint specifies a name and a set of rules."
+tags	
+0	"fingerprint"
+summary	"Read the Fingerprint object."
+operationId	"fingerprintRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesReadFingerprintResponse"
+delete	
+description	"Use this method to delete a Fingerprint object.\nA fingerprint specifies a name and a set of rules."
+tags	
+0	"fingerprint"
+summary	"Delete the Fingerprint object."
+operationId	"fingerprintDelete"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+204	
+description	"No Content"
+patch	
+description	"Use this method to update a Fingerprint object.\nA fingerprint specifies a name and a set of rules."
+tags	
+0	"fingerprint"
+summary	"Update the Fingerprint object."
+operationId	"fingerprintUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"data.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"data.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/leasesFingerprint"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/leasesUpdateFingerprintResponse"
+/dhcp/fingerprint_class	
+get	
+description	"Use this method to list all Fingerprint Class objects.\nA fingerprint class specifies the name of a device class for use in fingerprinting"
+tags	
+0	"fingerprint class"
+summary	"List Fingerprint Class objects."
+operationId	"fingerprint classList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+2	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+4	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+5	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesListFingerprintClassResponse"
+/dhcp/fingerprint_class/{id}	
+get	
+description	"Use this method to read a Fingerprint Class object.\nA fingerprint class specifies the name of a device class for use in fingerprinting"
+tags	
+0	"fingerprint class"
+summary	"Read the Fingerprint Class object."
+operationId	"fingerprint classRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesReadFingerprintClassResponse"
+/dhcp/global_lease	
+get	
+description	"Use this method to read the Global Lease configuration object."
+tags	
+0	"global_lease"
+summary	"Read the Global Lease object."
+operationId	"global_leaseRead"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesReadGlobalLeaseResponse"
+/dhcp/global_lease/{id}	
+get	
+description	"Use this method to read the Global Lease configuration object."
+tags	
+0	"global_lease"
+summary	"Read the Global Lease object."
+operationId	"global_leaseRead2"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesReadGlobalLeaseResponse"
+patch	
+tags	
+0	"global_lease"
+operationId	"global_leaseUpdate"
+parameters	
+0	
+type	"string"
+description	"An application identifier that will be used among\nother infrastructure services to identify the application"
+name	"payload.id.application_name"
+in	"path"
+required	true
+1	
+type	"string"
+description	"An application specific type name of a resource"
+name	"payload.id.resource_type"
+in	"path"
+required	true
+2	
+type	"string"
+description	"An application specific resource identity of a resource"
+name	"id"
+in	"path"
+required	true
+3	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/leasesGlobalLease"
+responses	
+201	
+description	"PATCH operation response"
+schema	
+$ref	"#/definitions/leasesUpdateGlobalLeaseResponse"
+/dhcp/lease	
+get	
+description	"Use this method to list all Lease objects.\nThe Lease object represents a DHCP lease on an address."
+tags	
+0	"lease"
+summary	"List Lease objects."
+operationId	"leaseList"
+parameters	
+0	
+type	"string"
+description	"\n\nA collection of response resources can be filtered by a logical expression string that includes JSON tag references to values in each resource, literal values, and logical operators. If a resource does not have the specified tag, its value is assumed to be null.\n\nLiteral values include numbers (integer and floating-point), and quoted (both single- or double-quoted) literal strings, and 'null'. The following operators are commonly used in filter expressions:\n\n|  Op   |  Description               | \n|  --   |  -----------               | \n|  ==   |  Equal                     | \n|  !=   |  Not Equal                 | \n|  >    |  Greater Than              | \n|   >=  |  Greater Than or Equal To  | \n|  <    |  Less Than                 | \n|  <=   |  Less Than or Equal To     | \n|  and  |  Logical AND               | \n|  ~    |  Matches Regex             | \n|  !~   |  Does Not Match Regex      | \n|  or   |  Logical OR                | \n|  not  |  Logical NOT               | \n|  ()   |  Groupping Operators       |\n\n\t\t\t\t\t\t"
+name	"_filter"
+in	"query"
+1	
+type	"string"
+description	"\n\nA collection of response resources can be sorted by their JSON tags. For a 'flat' resource, the tag name is straightforward. If sorting is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, its value is assumed to be null.)\n\nSpecify this parameter as a comma-separated list of JSON tag names. The sort direction can be specified by a suffix separated by whitespace before the tag name. The suffix 'asc' sorts the data in ascending order. The suffix 'desc' sorts the data in descending order. If no suffix is specified the data is sorted in ascending order.\n\n\t\t\t\t\t\t"
+name	"_order_by"
+in	"query"
+2	
+type	"string"
+description	"\n\nA collection of response resources can be transformed by specifying a set of JSON tags to be returned. For a “flat” resource, the tag name is straightforward. If field selection is allowed on non-flat hierarchical resources, the service should implement a qualified naming scheme such as dot-qualification to reference data down the hierarchy. If a resource does not have the specified tag, the tag does not appear in the output resource.\n\nSpecify this parameter as a comma-separated list of JSON tag names.\n\n\t\t\t\t\t\t"
+name	"_fields"
+in	"query"
+3	
+type	"integer"
+description	"\n\nThe integer index (zero-origin) of the offset into a collection of resources. If omitted or null the value is assumed to be '0'.\n\n\t\t\t\t\t\t\t"
+name	"_offset"
+in	"query"
+4	
+type	"integer"
+description	"\n\nThe integer number of resources to be returned in the response. The service may impose maximum value. If omitted the service may impose a default value.\n\n\t\t\t\t\t\t\t"
+name	"_limit"
+in	"query"
+5	
+type	"string"
+description	"\n\nThe service-defined string used to identify a page of resources. A null value indicates the first page.\n\n\t\t\t\t\t\t\t"
+name	"_page_token"
+in	"query"
+responses	
+200	
+description	"GET operation response"
+schema	
+$ref	"#/definitions/leasesListLeaseResponse"
+/dhcp/lease_command	
+post	
+description	"Use this method to create a LeaseCommand object.\nThe LeaseCommand object is for performing an action on a lease."
+tags	
+0	"lease_command"
+summary	"Create the LeaseCommand object."
+operationId	"lease_commandCreate"
+parameters	
+0	
+name	"body"
+in	"body"
+required	true
+schema	
+$ref	"#/definitions/leasesLeaseCommand"
+responses	
+201	
+description	"POST operation response"
+schema	
+$ref	"#/definitions/leasesCreateLeaseCommandResponse"
+definitions	
+inheritanceInheritedBool	
+description	"Inheritance configuration for a field of type Bool."
+type	"object"
+title	"InheritedBool"
+properties	
+action	
+description	"Optional. Inheritance setting for a field.\n\n* `inherit`: use the inherited value\n* `override`: use the value set in the object\n\nDefaults to `inherit`."
+type	"string"
+display_name	
+description	"Read-only. Human-readable display name for the object referred to by source."
+type	"string"
+source	
+description	"The resource identifier."
+type	"string"
+value	
+description	"Read-only. Inherited value."
+type	"boolean"
+format	"boolean"
+leasesCreateFingerprintResponse	
+description	"The Fingerprint object create response format."
+type	"object"
+title	"CreateFingerprintResponse"
+properties	
+result	
+description	"The created Fingerprint object."
+$ref	"#/definitions/leasesFingerprint"
+leasesCreateLeaseCommandResponse	
+type	"object"
+properties	
+success	
+type	"string"
+leasesFingerprint	
+description	"A fingerprint specifies a name and a set of rules.  If a client matches any of the set of rules then it is assigned the name as its fingerprint."
+type	"object"
+title	"Fingerprint"
+properties	
+class	
+description	"The resource identifier."
+type	"string"
+comment	
+description	"Comment of the fingerprint if any."
+type	"string"
+defined_by	
+description	"If this fingerprint was defined by the user or if it was defined by Infoblox."
+type	"string"
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+inheritance_sources	
+description	"Inheritance implementation for share_fingerprint field."
+$ref	"#/definitions/leasesFingerprintInheritance"
+name	
+description	"Name of the fingerprint."
+type	"string"
+rules	
+type	"array"
+title	"Collection of fingerprint rules for a given fingerprint"
+items	
+$ref	"#/definitions/leasesFingerprintRule"
+share_fingerprint	
+description	"If this fingerprint should be shared with Infoblox.  This only makes sense for custom fingerprints. The default for custom fingerprints is \"shared\" or true. The value could be inherited from dhcp/global_lease."
+type	"boolean"
+format	"boolean"
+tags	
+description	"Tagging specifics."
+$ref	"#/definitions/typesJSONValue"
+leasesFingerprintClass	
+description	"A fingerprint class specifies the name of a device class for use in fingerprinting. Initially the elements of the fingerprint class will be defined by Infoblox. They are not expected to change rapidly."
+type	"object"
+title	"FingerprintClass"
+properties	
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+name	
+description	"Name of the fingerprint class."
+type	"string"
+leasesFingerprintInheritance	
+description	"Inheritance configuration specifies how share_fingerprint is inherited."
+type	"object"
+title	"FingerprintInheritance"
+properties	
+share_fingerprint	
+title	"Boolean flag being inherited between fingerprints and global_leases"
+$ref	"#/definitions/inheritanceInheritedBool"
+leasesFingerprintRule	
+description	"The public dhcp/fingerprint_rule API represents a DHCP fingerprint rule. A lease matches a fingerprint rule if all of the sub-rules evaluate to true. If a sub-rule doesn’t include a value (it has been left empty) it evaluates to true."
+type	"object"
+title	"FingerprintRule"
+properties	
+prefix	
+description	"The value to use to match the first three bytes of the hardware address."
+type	"string"
+prl	
+description	"The value to use to match the parameter request list option (option 55)."
+type	"array"
+items	
+type	"string"
+format	"int64"
+vendor	
+type	"string"
+title	"The value to use to match the vendor class ID option (option 60)"
+vendor_compare	
+description	"The operation to use when matching the vendor class ID.  One of the following values {equals, not_equals}, defaults to \"equals\"."
+type	"string"
+leasesGlobalLease	
+description	"Global configuration stored in the lease DB. Used by default unless more specific configuration exists."
+type	"object"
+title	"GlobalLease"
+properties	
+id	
+description	"The resource identifier."
+type	"string"
+readOnly	true
+share_fingerprint	
+description	"If this fingerprint should be shared with Infoblox.  This only makes sense for custom fingerprints. The default for custom fingerprints is \"shared\" or true."
+type	"boolean"
+format	"boolean"
+leasesLease	
+description	"The public dhcp/lease API represents a DHCP lease on an address and exists only while the address is leased. Please note that hosts are authoritative for their lease data. Lease objects visible in the cloud are a read-only delayed replica and may be inconsistent with the current state of a disconnected host. There is only one dhcp/lease for an address in a space."
+type	"object"
+title	"Lease"
+properties	
+address	
+description	"Read-only Field. IP Address in the form \"a.b.c.d\" of the Lease object. This address will be marked as \"leased\" in IPAM while the Lease exists."
+type	"string"
+client_id	
+description	"Read-only Field. Client ID. It might be empty."
+type	"string"
+ends	
+description	"Read-only Field. Time when the Lease will expire."
+type	"string"
+format	"date-time"
+fingerprint	
+description	"Read-only Field. String of a fingerprint."
+type	"string"
+fingerprint_processed	
+description	"The field indicates if this lease has been fingerprinted yet."
+type	"string"
+ha_group	
+description	"The resource identifier."
+type	"string"
+hardware	
+description	"Read-only Field. Hardware Address. It consists of six groups of two hex digits in lower-case separated by colons, e.g. \"aa:bb:cc:dd:ee:ff\"."
+type	"string"
+host	
+description	"The resource identifier."
+type	"string"
+hostname	
+description	"Read-only Field. Client Hostname. It is a fully qualified domain name, consisting of a series of labels separated by dots, e.g. \"www.infoblox.com\". It might be empty."
+type	"string"
+last_updated	
+description	"Read-only Field. Time when the Lease was last updated."
+type	"string"
+format	"date-time"
+options	
+description	"Read-only data. DHCP options in JSON format."
+type	"string"
+space	
+description	"The resource identifier."
+type	"string"
+starts	
+description	"Read-only Field. Time when the Lease was issued."
+type	"string"
+format	"date-time"
+state	
+description	"Read-only Field. The state of the lease and its value could be \"used\" or \"abandoned\". Leases with a state of deleted are not returned to queries, they are for internal use."
+type	"string"
+leasesLeaseCommand	
+description	"The dhcp/lease_command API performs an action on a lease. The host that owns the lease must be available for this action to succeed. The command is executed asynchronously."
+type	"object"
+title	"LeaseCommand"
+required	
+0	"space"
+1	"address"
+2	"command"
+properties	
+address	
+description	"Required Field. IP Address in the form \"a.b.c.d\" within the IP space specified by 'space' field."
+type	"string"
+command	
+description	"The command to perform on the lease. It can have one of the following values: [clear]. The followings are descriptions for each commnd type:\ncommand          | description\n---------------- | --------------------------------\nclear            | Removes the lease defined by (space, address) from the DHCP server(s). This will NOT affect the client that issued the lease."
+type	"string"
+space	
+description	"The resource identifier."
+type	"string"
+leasesListFingerprintClassResponse	
+description	"The Fingerprint Class object list response format."
+type	"object"
+title	"ListFingerprintClassResponse"
+properties	
+results	
+description	"The list of Fingerprint Class objects."
+type	"array"
+items	
+$ref	"#/definitions/leasesFingerprintClass"
+leasesListFingerprintResponse	
+description	"The Fingerprint object list response format."
+type	"object"
+title	"ListFingerprintResponse"
+properties	
+results	
+description	"The list of Fingerprint objects."
+type	"array"
+items	
+$ref	"#/definitions/leasesFingerprint"
+leasesListLeaseResponse	
+description	"The Lease object list response format."
+type	"object"
+title	"ListLeaseResponse"
+properties	
+results	
+description	"The list of Lease objects."
+type	"array"
+items	
+$ref	"#/definitions/leasesLease"
+leasesReadFingerprintClassResponse	
+description	"The Fingerprint Class object read response format."
+type	"object"
+title	"ReadFingerprintResponse"
+properties	
+result	
+description	"The Fingerprint Class object."
+$ref	"#/definitions/leasesFingerprintClass"
+leasesReadFingerprintResponse	
+description	"The Fingerprint object read response format."
+type	"object"
+title	"ReadFingerprintResponse"
+properties	
+result	
+description	"The Fingerprint object."
+$ref	"#/definitions/leasesFingerprint"
+leasesReadGlobalLeaseResponse	
+description	"The Global Lease object read response format."
+type	"object"
+title	"ReadGlobalLeaseResponse"
+properties	
+result	
+description	"The global lease object."
+$ref	"#/definitions/leasesGlobalLease"
+leasesUpdateFingerprintResponse	
+description	"The Fingerprint object update response format."
+type	"object"
+title	"UpdateFingerprintResponse"
+properties	
+result	
+description	"The Fingerprint object."
+$ref	"#/definitions/leasesFingerprint"
+leasesUpdateGlobalLeaseResponse	
+description	"The Global Lease object update response format."
+type	"object"
+title	"UpdateGlobalLeaseResponse"
+properties	
+result	
+description	"The global lease object."
+$ref	"#/definitions/leasesGlobalLease"
+typesJSONValue	
+type	"object"
+properties	
+value	
+type	"string"
+securityDefinitions	
+ApiKeyAuth	
+type	"apiKey"
+name	"Authorization"
+in	"header"
+security	
+0	
+ApiKeyAuth	[]
